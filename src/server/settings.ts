@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { appPool } from "@/server/db/pool";
 import { log } from "@/server/logger";
-import { getEnv } from "@/server/env";
+import { ConfigError, getEnv } from "@/server/env";
 
 export type BrandTheme = "trust_blue" | "deep_blue" | "teal";
 
@@ -74,7 +74,8 @@ async function load(): Promise<SiteSettings> {
   } catch (err) {
     // Marketing/legal pages stay up with neutral defaults. Verification itself never
     // depends on this: it talks to the database directly and fails honestly.
-    log.warn("settings.load_failed", { code: (err as { code?: string }).code });
+    // ConfigError lists which settings are wrong (never their values), so a misconfigured deploy is diagnosable.
+    log.warn("settings.load_failed", { code: (err as { code?: string }).code, config: err instanceof ConfigError ? err.problems : undefined });
     return DEFAULTS;
   }
 }
