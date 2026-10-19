@@ -1,0 +1,60 @@
+# NOTE: this workflow has not been executed by the author (no GitHub Actions run was available).
+# It mirrors the commands that were run locally. Treat the first run as part of your own verification.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_PG_HOST: 127.0.0.1
+      TEST_PG_PORT: "5432"
+      TEST_PG_ADMIN_USER: postgres
+      TEST_PG_ADMIN_PASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install system packages (QR decoding tests rasterise PDFs)
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - name: Unit tests
+        run: pnpm test
+      - name: Database tests (real PostgreSQL)
+        run: pnpm test:db
+      - name: Production build
+        run: pnpm build
+        env:
+          # Build needs no secrets: configuration is validated lazily at runtime.
+          NEXT_TELEMETRY_DISABLED: "1"
+
+  # The end-to-end suite needs a Supabase Auth server and is run locally / on a self-hosted runner:
+  #   pnpm dev:stack && pnpm test:e2e
+  # To run it in CI, start `supabase start` (Docker) in a job, export its URL/keys in .env.local,
+  # then run `pnpm test:e2e`. See docs/DEVELOPMENT.md.

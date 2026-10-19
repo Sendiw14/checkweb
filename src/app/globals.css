@@ -107,6 +107,14 @@ html[data-brand="teal"] { --brand: #0f766e; --brand-deep: #115e59; --brand-soft:
 }
 
 @layer base {
+  /*
+   * A grid with no explicit columns gets one implicit "auto" track, whose minimum is the widest child's
+   * min-content. One long unbroken string or a wide table then pushes the whole page sideways on a phone.
+   * Default to a shrinkable track instead. Utilities sit in a later layer, so any grid-cols-* still wins.
+   */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
   html {
     color-scheme: light;
     -webkit-text-size-adjust: 100%;

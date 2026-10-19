@@ -22,7 +22,8 @@
     "labels:sample": "NODE_OPTIONS=--conditions=react-server tsx --env-file=.env.local scripts/sample-label.ts",
     "dev:stack": "tsx scripts/dev/stack.ts up",
     "dev:stack:reset": "tsx scripts/dev/stack.ts reset",
-    "dev:stack:down": "tsx scripts/dev/stack.ts down"
+    "dev:stack:down": "tsx scripts/dev/stack.ts down",
+    "docs:screenshots": "NODE_OPTIONS=--conditions=react-server tsx scripts/docs-screenshots.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -75,5 +76,6 @@
       "esbuild",
       "unrs-resolver"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.28.0"
 }

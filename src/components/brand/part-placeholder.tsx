@@ -5,7 +5,7 @@ export function PartPlaceholder({ className, label = "No photo available" }: { c
   const slots = Array.from({ length: 20 }, (_, i) => i * 18);
   const bolts = Array.from({ length: 5 }, (_, i) => i * 72 - 90);
   return (
-    <svg viewBox="0 0 120 120" role="img" aria-label={label} className={cn("size-full", className)}>
+    <svg viewBox="0 0 120 120" {...(label ? { role: "img", "aria-label": label } : { "aria-hidden": true, focusable: false })} className={cn("size-full", className)}>
       <rect width="120" height="120" fill="var(--cloud)" />
       <g fill="none" stroke="var(--brand)" strokeLinecap="round" opacity="0.9">
         <circle cx="60" cy="60" r="46" strokeWidth="1.6" />

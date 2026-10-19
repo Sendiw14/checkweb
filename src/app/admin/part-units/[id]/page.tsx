@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Activity, Eye, KeyRound, Printer, ShieldCheck, Truck } from "lucide-react";
 import { PageHeader } from "@/components/admin/page-header";
 import { StatusBadge } from "@/components/admin/status";
+import { OpenInvestigationButton } from "@/components/admin/open-investigation";
 import { UnitActions } from "@/components/admin/unit-actions";
 import { ProductThumb } from "@/components/admin/product-thumb";
 import { Alert } from "@/components/ui/alert";
@@ -38,7 +39,7 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
         crumbs={[{ label: "Part units", href: "/admin/part-units" }, { label: u.serial_number }]}
         title={<span className="font-mono">{u.serial_number}</span>}
         meta={<><ProductThumb src={productImageUrl(u.image_path)} className="size-7" /><Link href={`/admin/products/${u.product_id}`} className="text-small font-medium text-body hover:text-brand">{u.product_name}</Link><span className="text-quiet">·</span><Link href={`/admin/batches/${u.batch_id}`} className="text-serial text-body hover:text-brand">{u.batch_code}</Link></>}
-        actions={<UnitActions unitId={id} serial={u.serial_number} lifecycle={u.lifecycle_status} hasActiveToken={!!active} can={{ reissue: can(staff.role, "labels.reissue"), quarantine: can(staff.role, "batches.quarantine"), retire: can(staff.role, "units.retire"), confirmLabels: can(staff.role, "labels.confirm") }} />}
+        actions={<div className="flex flex-wrap items-center gap-2">{can(staff.role, "investigations.manage") ? <OpenInvestigationButton unitId={id} serial={u.serial_number} /> : null}<UnitActions unitId={id} serial={u.serial_number} lifecycle={u.lifecycle_status} hasActiveToken={!!active} can={{ reissue: can(staff.role, "labels.reissue"), quarantine: can(staff.role, "batches.quarantine"), retire: can(staff.role, "units.retire"), confirmLabels: can(staff.role, "labels.confirm") }} /></div>}
       />
 
       {signals?.recalls.length ? <Alert tone="danger" title="An active recall covers this unit" className="mb-6">{signals.recalls.map((r) => <Link key={r.id} href={`/admin/recalls/${r.id}`} className="mr-3 font-medium underline underline-offset-4">{r.reference}: {r.title}</Link>)}</Alert> : null}
@@ -56,7 +57,7 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
             <div className="flex items-center gap-2 text-small font-semibold text-ink"><c.icon aria-hidden className="size-4 text-quiet" />{c.title}</div>
             <div className="mt-3">{c.badge}</div>
             <p className="mt-2 text-caption text-quiet">{c.extra}</p>
-            <p className="mt-1 text-caption text-quiet/90">{c.note}</p>
+            <p className="mt-1 text-caption text-quiet">{c.note}</p>
           </Card>
         ))}
       </section>
@@ -101,7 +102,7 @@ export default async function UnitPage({ params }: { params: Promise<{ id: strin
             <CardHeader><CardTitle as="h2">Verification events</CardTitle><CardDescription>Latest 15. {signals ? `${formatNumber(signals.stats.networks)} distinct network${signals.stats.networks === 1 ? "" : "s"} and ${formatNumber(signals.stats.countries)} countr${signals.stats.countries === 1 ? "y" : "ies"} seen. Treat these as hints, never as proof.` : ""}</CardDescription></CardHeader>
             <CardContent>
               {events.length === 0 ? <div className="flex flex-col items-center gap-2 py-8 text-center"><Activity aria-hidden className="size-6 text-quiet" /><p className="text-small text-quiet">No checks recorded for this unit yet.</p></div> : (
-                <div className="relative overflow-x-auto"><table className="w-full text-left text-small"><caption className="sr-only">Verification events for {u.serial_number}</caption>
+                <div role="region" aria-label={`Verification events for ${u.serial_number}`} tabIndex={0} className="relative overflow-x-auto rounded-md"><table className="w-full text-left text-small"><caption className="sr-only">Verification events for {u.serial_number}</caption>
                   <thead className="text-caption uppercase tracking-wider text-quiet"><tr><th scope="col" className="py-2 pr-4">When</th><th scope="col" className="py-2 pr-4">Outcome</th><th scope="col" className="py-2 pr-4">Channel</th><th scope="col" className="hidden py-2 pr-4 sm:table-cell">Device / place</th>{canSignals ? <th scope="col" className="hidden py-2 md:table-cell">Signals</th> : null}</tr></thead>
                   <tbody>{events.map((e) => (
                     <tr key={e.id} className="border-t border-line"><td className="whitespace-nowrap py-2.5 pr-4 text-body">{formatDateTime(e.created_at)}</td><td className="py-2.5 pr-4"><StatusBadge kind="result" value={e.result} /></td>

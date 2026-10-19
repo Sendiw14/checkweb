@@ -11,6 +11,9 @@ export async function labelableBatches() {
           and not exists (select 1 from public.label_job_units ju join public.label_jobs j on j.id = ju.job_id where ju.unit_id = u.id and j.state in ('queued', 'running'))) as unlabelled
      from public.manufacturing_batches b join public.products p on p.id = b.product_id
      where b.processing_status <> 'cancelled' and b.release_status not in ('quarantined', 'qc_hold')
+       -- Narrow to batches that still have never-labelled units BEFORE limiting, using the (batch_id, label_status)
+       -- index. Limiting first would hide an older batch that needs labels behind 200 finished ones.
+       and exists (select 1 from public.part_units u where u.batch_id = b.id and u.label_status = 'unlabelled' and u.lifecycle_status <> 'retired')
      order by b.created_at desc limit 200`);
   return (rows as { id: string; batch_code: string; product_name: string; sku: string; processing_status: string; release_status: string; expected_quantity: number; registered: number; unlabelled: number }[]).filter((b) => b.unlabelled > 0);
 }

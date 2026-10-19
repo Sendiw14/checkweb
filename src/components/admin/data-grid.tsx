@@ -80,7 +80,7 @@ export function DataGrid<T>({ data, columns, caption, sortParam = "sort", dirPar
                     {detailCols.map((c) => (
                       <div key={c.id} className="min-w-0">
                         <dt className="text-caption text-quiet">{c.label ?? c.id}</dt>
-                        <dd className="mt-0.5 break-words text-small text-body">{render(c.id)}</dd>
+                        <dd className="mt-0.5 break-words text-small text-body [&_.whitespace-nowrap]:whitespace-normal">{render(c.id)}</dd>
                       </div>
                     ))}
                   </dl>

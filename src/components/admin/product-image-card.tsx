@@ -38,7 +38,7 @@ export function ProductImageCard({ productId, imageUrl, name, canWrite }: { prod
       {error ? <Alert tone="danger" className="mt-3">{error}</Alert> : null}
       {canWrite ? (
         <div className="mt-3 flex flex-wrap gap-2">
-          <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" id="product-image-input" onChange={(e) => void onFile(e.target.files?.[0])} />
+          <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" id="product-image-input" aria-label="Choose a product photo (JPEG, PNG or WebP)" tabIndex={-1} onChange={(e) => void onFile(e.target.files?.[0])} />
           <Button variant="secondary" size="sm" loading={busy} onClick={() => inputRef.current?.click()}>{imageUrl ? <Upload aria-hidden /> : <ImagePlus aria-hidden />}{imageUrl ? "Replace photo" : "Add photo"}</Button>
           {imageUrl ? <Button variant="ghost" size="sm" onClick={() => setConfirm(true)} disabled={busy}><Trash2 aria-hidden />Remove</Button> : null}
         </div>

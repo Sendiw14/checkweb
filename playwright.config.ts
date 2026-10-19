@@ -24,7 +24,7 @@ export default defineConfig({
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } },
-    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /(rbac|workflow|mfa)\.spec\.ts/ },
+    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /(rbac|workflow|mfa|team|investigation)\.spec\.ts/ },
   ],
   webServer: process.env.E2E_BASE_URL ? undefined : { command: "npm run dev", url: `${E2E.baseURL}/api/health`, reuseExistingServer: true, timeout: 180_000 },
 });

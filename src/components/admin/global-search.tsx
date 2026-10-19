@@ -53,10 +53,10 @@ export function GlobalSearch() {
 
   return (
     <>
-      <Button variant="secondary" size="md" className="h-9 w-9 justify-center gap-2 px-0 text-quiet sm:w-64 sm:justify-start sm:px-3 sm:font-normal" onClick={() => setOpen(true)} aria-label="Search (press slash or Command K)">
+      <Button variant="secondary" size="md" className="h-9 w-9 justify-center gap-2 px-0 text-quiet sm:w-64 sm:justify-start sm:px-3 sm:font-normal" onClick={() => setOpen(true)} aria-label="Search serials, SKUs, batches… (press slash or Command K)">
         <Search aria-hidden />
         <span className="hidden sm:inline">Search serials, SKUs, batches…</span>
-        <kbd className="ml-auto hidden rounded border border-line bg-cloud px-1.5 font-mono text-[0.6875rem] text-quiet sm:inline">/</kbd>
+        <kbd aria-hidden data-key="/" className="ml-auto hidden rounded border border-line bg-cloud px-1.5 font-mono text-[0.6875rem] text-quiet after:content-[attr(data-key)] sm:inline" />
       </Button>
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent title="Search" description="Find a serial number, SKU, batch code or case reference." className="top-[18%] translate-y-0 gap-0 p-0 sm:max-w-xl [&>div:first-child]:sr-only">

@@ -80,7 +80,7 @@ export function LabelWizard({ batches, defaults, qrByEc, initialBatch, daysToExp
                 {batches.length === 0 ? <Alert tone="info" className="mt-5" title="Nothing is waiting for labels">Every registered unit already has a code, or no batch is registered. Register units on a batch first.</Alert> : (
                   <>
                     <div className="mt-5 max-w-sm"><Input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter by batch, product or SKU" aria-label="Filter batches" /></div>
-                    <div role="radiogroup" aria-label="Batches" className="mt-4 grid gap-2.5">
+                    <div role="radiogroup" aria-label="Batches" className="mt-4 grid grid-cols-[minmax(0,1fr)] gap-2.5">
                       {visible.map((b) => (
                         <button key={b.id} type="button" role="radio" aria-checked={b.id === batchId} onClick={() => { setBatchId(b.id); setQuantity(String(b.unlabelled)); }}
                           className={cn("flex w-full flex-wrap items-center justify-between gap-3 rounded-lg border bg-white p-4 text-left transition-[border-color,box-shadow]", b.id === batchId ? "border-brand shadow-[0_0_0_3px_color-mix(in_srgb,var(--brand)_18%,transparent)]" : "border-line hover:border-line-strong")}>

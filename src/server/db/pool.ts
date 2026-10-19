@@ -30,7 +30,8 @@ function make(name: PoolName): pg.Pool {
     max: env.DATABASE_POOL_MAX,
     idleTimeoutMillis: 10_000,
     connectionTimeoutMillis: 5_000,
-    statement_timeout: 15_000,
+    // Server-side limits are role settings (migration 20261019000800), which work through any pooler.
+    // This client-side guard only covers a database that stops answering at all.
     query_timeout: 20_000,
     application_name: name === "verifier" ? "authenticity-verify" : "authenticity-app",
   });

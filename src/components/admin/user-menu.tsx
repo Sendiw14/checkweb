@@ -8,10 +8,11 @@ import { initials } from "@/lib/utils";
 export function UserMenu({ name, email, roleLabel }: { name: string; email: string; roleLabel: string }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-lg border border-transparent py-1 pl-1 pr-2 text-left transition-colors hover:border-line hover:bg-cloud focus-visible:outline-2 focus-visible:outline-brand" aria-label={`Account menu, ${name}`}>
-        <span aria-hidden className="grid size-8 place-items-center rounded-full bg-ink text-caption font-semibold text-white">{initials(name)}</span>
+      <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-lg border border-transparent py-1 pl-1 pr-2 text-left transition-colors hover:border-line hover:bg-cloud focus-visible:outline-2 focus-visible:outline-brand" aria-label={`${name} ${roleLabel}, account menu`}>
+        {/* Initials are decoration: drawn by CSS so they are not text content that the accessible name would have to repeat. */}
+        <span aria-hidden data-initials={initials(name)} className="grid size-8 place-items-center rounded-full bg-ink text-caption font-semibold text-white after:content-[attr(data-initials)]" />
         <span className="hidden min-w-0 sm:block">
-          <span className="block max-w-36 truncate text-small font-semibold leading-tight text-ink">{name}</span>
+          <span className="block max-w-36 truncate text-small font-semibold leading-tight text-ink">{name}</span>{" "}
           <span className="block text-caption leading-tight text-quiet">{roleLabel}</span>
         </span>
         <ChevronsUpDown aria-hidden className="hidden size-4 text-quiet sm:block" />

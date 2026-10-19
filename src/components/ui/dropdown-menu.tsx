@@ -3,7 +3,13 @@ import * as React from "react";
 import { DropdownMenu as M } from "radix-ui";
 import { cn } from "@/lib/utils";
 
-export const DropdownMenu = M.Root;
+/**
+ * Non-modal on purpose: this is the WAI-ARIA "menu button" pattern, where Tab closes the menu. A modal
+ * menu would mark the rest of the page aria-hidden while leaving focusable items inside it.
+ */
+export function DropdownMenu(props: React.ComponentProps<typeof M.Root>) {
+  return <M.Root modal={false} {...props} />;
+}
 export const DropdownMenuTrigger = M.Trigger;
 export const DropdownMenuGroup = M.Group;
 
