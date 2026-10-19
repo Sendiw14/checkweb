@@ -7,7 +7,7 @@ afterAll(closePools);
 
 const spec = { page: "A4", labelWidthMm: 50, labelHeightMm: 30, qrSizeMm: 22 };
 const createJob = async (batchId: string, qty: number, key = randomUUID(), kind = "issue", unitIds: string[] | null = null) =>
-  (await admin.query("select public.create_label_job($1, $2, $3, $4, $5, null, $6::uuid[], 500) as r", [batchId, kind, qty, key, JSON.stringify(spec), unitIds])).rows[0].r as { jobId: string; created: boolean; allocated: number };
+  (await admin.query("select public.create_label_job($1, $2, $3, $4, $5, null, $6::uuid[], 500, $7) as r", [batchId, kind, qty, key, JSON.stringify(spec), unitIds, kind === "reissue" ? "test reissue" : null])).rows[0].r as { jobId: string; created: boolean; allocated: number };
 
 async function batchWithUnits(n: number) {
   const p = await createProduct();

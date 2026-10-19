@@ -1,5 +1,19 @@
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+/**
+ * tailwind-merge must know our custom type-scale utilities (defined with @utility in
+ * globals.css). Without this it reads `text-metric` / `text-small` as *colours* and
+ * silently drops them whenever a real colour class such as `text-success` is present.
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [{ text: ["display", "title", "heading", "subheading", "lead", "small", "caption", "label", "eyebrow", "metric", "serial"] }],
+    },
+    conflictingClassGroups: {},
+  },
+});
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

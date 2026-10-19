@@ -47,11 +47,13 @@ async function callVerify(credential: string): Promise<PublicVerification> {
  */
 export function VerifyExperience({ contact }: { contact: PublicContact }) {
   const [phase, setPhase] = React.useState<Phase>({ kind: "idle" });
+  const [canRetry, setCanRetry] = React.useState(false);
   const credentialRef = React.useRef<string | null>(null);
   const startedRef = React.useRef(false);
 
   const run = React.useCallback(async (credential: string) => {
     credentialRef.current = credential;
+    setCanRetry(true);
     setPhase({ kind: "loading" });
     try {
       const data = await callVerify(credential);
@@ -69,12 +71,15 @@ export function VerifyExperience({ contact }: { contact: PublicContact }) {
     const raw = window.location.hash.replace(/^#/, "");
     if (raw) {
       history.replaceState(null, "", window.location.pathname + window.location.search);
+      // Reading the URL fragment on mount synchronises with an external system (the address bar).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       void run(stripToCredential(decodeURIComponent(raw)));
     }
   }, [run]);
 
   const reset = () => {
     credentialRef.current = null;
+    setCanRetry(false);
     setPhase({ kind: "idle" });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -103,7 +108,7 @@ export function VerifyExperience({ contact }: { contact: PublicContact }) {
 
         {phase.kind === "result" ? (
           <motion.div key={`r-${phase.data.requestId}`} variants={fadeUp} initial="hidden" animate="visible" exit="exit">
-            <ResultView data={phase.data} contact={contact} onRetry={credentialRef.current ? () => void run(credentialRef.current!) : undefined} onAnother={reset} />
+            <ResultView data={phase.data} contact={contact} onRetry={canRetry ? () => void run(credentialRef.current!) : undefined} onAnother={reset} />
           </motion.div>
         ) : null}
 
@@ -113,7 +118,7 @@ export function VerifyExperience({ contact }: { contact: PublicContact }) {
               data={{ status: "unavailable", requestId: crypto.randomUUID() }}
               copyOverride={OFFLINE_COPY}
               contact={contact}
-              onRetry={credentialRef.current ? () => void run(credentialRef.current!) : undefined}
+              onRetry={canRetry ? () => void run(credentialRef.current!) : undefined}
               onAnother={reset}
             />
           </motion.div>

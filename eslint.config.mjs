@@ -5,13 +5,15 @@ const config = [
   ...nextVitals,
   ...nextTs,
   {
-    ignores: [".next/**", "node_modules/**", "coverage/**", "test-results/**", "playwright-report/**", "next-env.d.ts"],
+    ignores: [".local/**", ".next/**", "node_modules/**", "coverage/**", "test-results/**", "playwright-report/**", "next-env.d.ts"],
   },
   {
     rules: {
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       // Plaintext tokens must never reach logs; force callers through the redacting logger.
-      "no-console": ["error", { allow: [] }],
+      "no-console": "error",
+      // Apostrophes and quotes are fine in JSX text; keep the rule only for the characters that are real typos.
+      "react/no-unescaped-entities": ["error", { forbid: [">", "}"] }],
     },
   },
   {

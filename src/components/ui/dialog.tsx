@@ -55,11 +55,10 @@ export function ConfirmDialog({
 }) {
   const [busy, setBusy] = React.useState(false);
   const [typed, setTyped] = React.useState("");
-  React.useEffect(() => { if (!open) setTyped(""); }, [open]);
   const blocked = !!requireText && typed.trim() !== requireText;
 
   return (
-    <AD.Root open={open} onOpenChange={(v) => { if (!busy) onOpenChange(v); }}>
+    <AD.Root open={open} onOpenChange={(v) => { if (busy) return; if (!v) setTyped(""); onOpenChange(v); }}>
       <AD.Portal>
         <AD.Overlay className={overlay} />
         <AD.Content className={panel}>

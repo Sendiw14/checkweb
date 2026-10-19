@@ -23,7 +23,7 @@ describe("log redaction", () => {
       password: "hunter2",
       nested: { sessionId: "abc", token_hash: "ff", authorization: "Bearer zzz", fine: "visible", list: [{ apiKey: "k" }] },
       raw: Buffer.from("secret-bytes"),
-    }) as Record<string, any>;
+    }) as { requestId: string; nested: { fine: string } };
     expect(JSON.stringify(out)).not.toMatch(/hunter2|secret-bytes|zzz|"k"/);
     expect(out.requestId).toBe("ok");
     expect(out.nested.fine).toBe("visible");

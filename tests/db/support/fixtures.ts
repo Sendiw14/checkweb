@@ -92,6 +92,13 @@ export async function createLiveUnit() {
   return { product, batch, unit: unit!, ...issued };
 }
 
+export type RawResult = {
+  result: string; eventId: number; riskReasons: string[];
+  unit: { serial: string; previousScanCount: number; firstVerifiedAt: string | null; lifecycle: string };
+  product: { name: string; partNumber: string; brand: string | null; category: string | null; imagePath: string | null };
+  recall?: { reference: string; title: string; instructions: string; issuedAt: string | null } | null;
+};
+
 export type VerifyArgs = {
   hash: Buffer;
   kind?: "token" | "code";
@@ -102,13 +109,13 @@ export type VerifyArgs = {
   pool?: pg.Pool;
 };
 
-export async function verify(a: VerifyArgs) {
+export async function verify(a: VerifyArgs): Promise<RawResult> {
   const pool = a.pool ?? verifier;
   const { rows } = await pool.query(
     "select public.verify_part_token($1, $2, $3, $4, $5, $6, $7, null) as r",
     [a.hash, a.kind ?? "token", a.channel ?? "customer", randomUUID(), a.network ?? null, a.country ?? null, a.ua ?? null],
   );
-  return rows[0].r as Record<string, any>;
+  return rows[0].r as RawResult;
 }
 
 export const netHash = (n: number) => Buffer.alloc(16, n);

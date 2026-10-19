@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { generateToken, hashManualCode, hashToken } from "@/server/security/tokens";
 import {
-  admin, closePools, createBatch, createLiveUnit, createProduct, createUser, issueToken, netHash,
+  type RawResult, admin, closePools, createBatch, createLiveUnit, createProduct, createUser, issueToken, netHash,
   registerUnits, releaseUnit, verify,
 } from "./support/fixtures";
 
@@ -188,7 +188,7 @@ describe("verify_part_token: explainable risk rules", () => {
 
   it("rapid_repeat: the 5th customer scan in 10 minutes is suspicious, with reasons", async () => {
     const u = await createLiveUnit();
-    let last: Record<string, any> = {};
+    let last = {} as RawResult;
     for (let i = 0; i < 5; i++) last = await verify({ hash: hashToken(u.token), network: netHash(7) });
     expect(last.result).toBe("suspicious");
     expect(last.riskReasons).toEqual(["rapid_repeat"]);
