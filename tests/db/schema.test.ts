@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { afterAll, describe, expect, it } from "vitest";
 import { generateToken, hashManualCode, hashToken } from "@/server/security/tokens";
 import {
-  admin, closePools, createBatch, createLiveUnit, createProduct, createStaff, createUser, issueToken, registerUnits, releaseUnit,
+  admin, clearMemberships, closePools, createBatch, createLiveUnit, createProduct, createStaff, createUser, issueToken, registerUnits, releaseUnit,
 } from "./support/fixtures";
 
 afterAll(closePools);
@@ -237,7 +237,7 @@ describe("batch-level operations", () => {
 
 describe("staff, append-only logs and audit hygiene", () => {
   it("protects the last active owner", async () => {
-    await admin.query("delete from public.admin_memberships");
+    await clearMemberships();
     const owner = await createStaff("owner");
     await expect(admin.query("update public.admin_memberships set role = 'admin' where user_id = $1", [owner.id])).rejects.toThrow(/last active owner/);
     await expect(admin.query("update public.admin_memberships set status = 'suspended' where user_id = $1", [owner.id])).rejects.toThrow(/last active owner/);

@@ -101,7 +101,7 @@ export async function requestPasswordReset(input: unknown): Promise<AuthResult> 
   if (!a.allowed || !b.allowed) return { ok: true }; // silently throttle; same response
   try {
     const supabase = await createSupabaseServerClient();
-    await supabase.auth.resetPasswordForEmail(parsed.data.email, { redirectTo: `${getEnv().PUBLIC_SITE_URL}/auth/confirm?next=/reset-password` });
+    await supabase.auth.resetPasswordForEmail(parsed.data.email, { redirectTo: `${getEnv().PUBLIC_SITE_URL}/auth/confirm` });
   } catch (err) {
     log.warn("auth.reset_request_failed", { code: (err as { code?: string }).code });
   }
@@ -109,12 +109,12 @@ export async function requestPasswordReset(input: unknown): Promise<AuthResult> 
 }
 
 /** Exchanges the emailed token for a session (POST, so mail scanners that prefetch links can't burn it). */
-export async function confirmEmailToken(tokenHash: string, type: string, next: string): Promise<AuthResult> {
+export async function confirmEmailToken(tokenHash: string, type: string): Promise<AuthResult> {
   if (!/^[A-Za-z0-9_-]{10,200}$/.test(tokenHash) || !["recovery", "invite", "email"].includes(type)) return { ok: false, error: "This link isn't valid." };
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: type as "recovery" | "invite" | "email" });
   if (error) return { ok: false, error: "This link has expired or was already used. Request a new one." };
-  redirect(next === "/reset-password" ? "/reset-password" : "/reset-password");
+  redirect("/reset-password"); // recovery and invite links both end at choosing a password
 }
 
 export async function setNewPassword(input: unknown): Promise<AuthResult> {

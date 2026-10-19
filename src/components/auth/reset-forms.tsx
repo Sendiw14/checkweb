@@ -50,7 +50,7 @@ export function NewPasswordForm() {
   );
 }
 
-export function ConfirmTokenForm({ tokenHash, type, next }: { tokenHash: string; type: string; next: string }) {
+export function ConfirmTokenForm({ tokenHash, type }: { tokenHash: string; type: string }) {
   const [error, setError] = React.useState<string | null>(null);
   const [busy, setBusy] = React.useState(false);
   return (
@@ -58,7 +58,7 @@ export function ConfirmTokenForm({ tokenHash, type, next }: { tokenHash: string;
       {error ? <Alert tone="danger">{error}</Alert> : null}
       <Button size="lg" loading={busy} onClick={async () => {
         setBusy(true); setError(null);
-        const res = await confirmEmailToken(tokenHash, type, next);
+        const res = await confirmEmailToken(tokenHash, type);
         if (res && !res.ok) setError(res.error);
         setBusy(false);
       }}>Continue</Button>

@@ -13,7 +13,7 @@ import { inviteSchema } from "@/lib/schemas/team";
 import { ROLES, type Role } from "@/server/domain/enums";
 
 const refresh = () => revalidatePath("/admin/team");
-const linkFor = (hashed: string, type: "invite" | "recovery") => `${getEnv().PUBLIC_SITE_URL}/auth/confirm?token_hash=${encodeURIComponent(hashed)}&type=${type}&next=/reset-password`;
+const linkFor = (hashed: string, type: "invite" | "recovery") => `${getEnv().PUBLIC_SITE_URL}/auth/confirm?token_hash=${encodeURIComponent(hashed)}&type=${type}`;
 
 /**
  * Creates the person's sign-in identity and membership, and returns a one-time setup link.

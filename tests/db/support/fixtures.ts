@@ -27,6 +27,21 @@ export async function createUser(email = `user-${randomUUID()}@example.test`) {
   return { id, email };
 }
 
+/**
+ * Empties admin_memberships regardless of how many owners exist. The last-owner trigger would (correctly)
+ * refuse a plain DELETE when exactly one active owner is left, which made tests order-dependent.
+ */
+export async function clearMemberships() {
+  const c = await admin.connect();
+  try {
+    await c.query("set session_replication_role = replica");
+    await c.query("delete from public.admin_memberships");
+  } finally {
+    await c.query("reset session_replication_role");
+    c.release();
+  }
+}
+
 export async function createStaff(role: string, status = "active") {
   const u = await createUser();
   await admin.query("insert into public.admin_memberships (user_id, email, role, status) values ($1, $2, $3, $4)", [u.id, u.email, role, status]);
