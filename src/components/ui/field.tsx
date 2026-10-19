@@ -17,12 +17,15 @@ export function Label({ className, ...props }: React.ComponentProps<typeof Radix
  * SelectTrigger rendered inside picks up id, aria-describedby and aria-invalid.
  */
 export function Field({
-  label, hint, error, required = false, disabled = false, className, children, optionalLabel,
+  label, hint, error, required = false, disabled = false, className, children, optionalLabel, id: idProp,
 }: {
+  /** Use when something else (a focus target, a skip link) needs to know the control's id. Never set the id on the control itself. */
+  id?: string;
   label: React.ReactNode; hint?: React.ReactNode; error?: string | null; required?: boolean; disabled?: boolean;
   className?: string; children: React.ReactNode; optionalLabel?: boolean;
 }) {
-  const id = React.useId();
+  const autoId = React.useId();
+  const id = idProp ?? autoId;
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;

@@ -7,7 +7,7 @@ import { ResultView, type PublicContact } from "@/components/public/result-view"
 import { Skeleton } from "@/components/ui/skeleton";
 import { OFFLINE_COPY } from "@/lib/verification-copy";
 import { fadeUp } from "@/lib/motion";
-import type { PublicVerification } from "@/lib/verification-types";
+import { normalizeVerifyResponse, type PublicVerification } from "@/lib/verification-types";
 import { stripToCredential } from "@/lib/credential-format";
 
 type Phase =
@@ -31,9 +31,8 @@ async function callVerify(credential: string): Promise<PublicVerification> {
       referrerPolicy: "no-referrer",
       signal: ctl.signal,
     });
-    const body = (await res.json().catch(() => null)) as PublicVerification | null;
-    if (body && typeof body.status === "string") return body;
-    return { status: res.status >= 500 ? "unavailable" : "error", requestId: res.headers.get("x-request-id") ?? crypto.randomUUID() };
+    const body: unknown = await res.json().catch(() => null);
+    return normalizeVerifyResponse(body, res.status, res.headers.get("x-request-id") ?? crypto.randomUUID());
   } finally {
     clearTimeout(timer);
   }

@@ -37,10 +37,9 @@ export function ManualCodeForm({
         await onSubmitCode(normalizeManualCode(clean) ?? clean);
       })}
     >
-      <Field label={label} hint={hint} error={errors.credential?.message}>
+      <Field id={inputId} label={label} hint={hint} error={errors.credential?.message}>
         <Input
           {...reg}
-          id={inputId}
           inputMode="text"
           autoCapitalize="characters"
           autoCorrect="off"
