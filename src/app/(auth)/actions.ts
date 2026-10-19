@@ -53,7 +53,7 @@ export async function signIn(input: unknown, next?: string): Promise<AuthResult>
   );
   const m = rows[0];
   if (!m || m.status !== "active") {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: "local" }); // only the session just created
     await writeAudit(null, { action: "auth.login_denied", targetType: "user", targetId: data.user.id, metadata: { reason: m ? "suspended" : "no_membership" } }).catch(() => {});
     return { ok: false, error: GENERIC_LOGIN_ERROR }; // same message: don't confirm valid credentials to non-staff
   }
@@ -137,6 +137,6 @@ export async function signOutAction() {
   const state = await getSessionState();
   const supabase = await createSupabaseServerClient();
   if (state.status === "ok") await writeAudit(state.staff, { action: "auth.logout" }).catch(() => {});
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: "local" }); // this device only; "Sign out other devices" on the security page is the explicit global option
   redirect("/login");
 }

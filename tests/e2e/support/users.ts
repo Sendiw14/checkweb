@@ -16,6 +16,9 @@ export const PERSONAS = {
   warehouse_operator: { key: "warehouse_operator", email: "e2e-warehouse@example.test", role: "warehouse_operator", name: "E2E Warehouse" },
   support_agent: { key: "support_agent", email: "e2e-support@example.test", role: "support_agent", name: "E2E Support" },
   auditor: { key: "auditor", email: "e2e-auditor@example.test", role: "auditor", name: "E2E Auditor" },
+  // Dedicated to specs that sign out, change the password or revoke sessions, so they can't invalidate the shared role sessions.
+  session: { key: "session", email: "e2e-session@example.test", role: "auditor", name: "E2E Session" },
+  pwchange: { key: "pwchange", email: "e2e-pwchange@example.test", role: "support_agent", name: "E2E Password" },
   mfa: { key: "mfa", email: "e2e-mfa@example.test", role: "admin", name: "E2E MFA" },
   suspended: { key: "suspended", email: "e2e-suspended@example.test", role: "admin", status: "suspended", name: "E2E Suspended" },
   nomember: { key: "nomember", email: "e2e-nomember@example.test", role: null, name: "E2E Nobody" },
@@ -67,3 +70,8 @@ export async function uiLogin(page: Page, p: Persona, password = PASSWORD) {
 }
 
 export function ensureStateDir() { mkdirSync(E2E.stateDir, { recursive: true }); }
+
+/** A browser context with its own fake client address, so the (real) per-IP login limiter doesn't couple tests. */
+export async function freshContext(browser: import("@playwright/test").Browser, opts: { storageState?: string } = {}) {
+  return browser.newContext({ baseURL: E2E.baseURL, extraHTTPHeaders: { "x-forwarded-for": freshIp() }, ...opts });
+}
