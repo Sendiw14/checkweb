@@ -11,6 +11,7 @@ const supabaseHost = (() => {
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  devIndicators: false,
   // `pg` uses native-ish Node APIs and must not be bundled for the server.
   serverExternalPackages: ["pg"],
   images: {

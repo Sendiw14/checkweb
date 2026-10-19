@@ -1,0 +1,288 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Design tokens. Raw values mirror src/lib/design-tokens.ts (verified by
+ * tests/unit/contrast.test.ts). White-first: public pages sit on white, the admin
+ * workspace on "cloud" with white panels. Navy carries type, blue carries action,
+ * teal is the sparing accent for "verified".
+ */
+:root {
+  --surface: #ffffff;
+  --cloud: #f8fafc;
+  --subtle: #f1f5f9;
+  --line: #e4e7ec;
+  --line-strong: #d0d5dd;
+  --input-border: #8a94a6;
+
+  --ink: #172b4d;
+  --body: #344054;
+  --quiet: #667085;
+  --faint: #98a2b3; /* decoration / disabled only: fails 4.5:1 for text */
+
+  --brand: #2457c5;
+  --brand-deep: #1d429a;
+  --brand-soft: #eff6ff;
+  --teal: #0f766e;
+  --teal-soft: #e0f2f1;
+
+  --success: #166534;
+  --success-soft: #ecfdf3;
+  --success-line: #abefc6;
+  --warning: #92400e;
+  --warning-soft: #fffaeb;
+  --warning-line: #fedf89;
+  --danger: #b42318;
+  --danger-soft: #fef3f2;
+  --danger-line: #fecdca;
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-instant: 120ms;
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --dur-slow: 400ms;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Approved brand themes (settings.brand_theme). Only the brand ramp changes. */
+html[data-brand="deep_blue"] { --brand: #1d429a; --brand-deep: #163377; --brand-soft: #e8eefb; }
+html[data-brand="teal"] { --brand: #0f766e; --brand-deep: #115e59; --brand-soft: #e0f2f1; }
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans Sinhala", "Noto Sans Tamil", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+  --color-surface: var(--surface);
+  --color-cloud: var(--cloud);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-input: var(--input-border);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-quiet: var(--quiet);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-soft: var(--brand-soft);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-line: var(--success-line);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-line: var(--warning-line);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-line: var(--danger-line);
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --shadow-xs: 0 1px 2px rgb(23 43 77 / 0.05);
+  --shadow-sm: 0 1px 3px rgb(23 43 77 / 0.08), 0 1px 2px rgb(23 43 77 / 0.04);
+  --shadow-md: 0 4px 12px -2px rgb(23 43 77 / 0.08), 0 2px 4px -2px rgb(23 43 77 / 0.05);
+  --shadow-pop: 0 12px 32px -8px rgb(23 43 77 / 0.18), 0 4px 10px -4px rgb(23 43 77 / 0.08);
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --breakpoint-xs: 23.75rem; /* 380px */
+  --breakpoint-2xl: 90rem; /* 1440px */
+
+  --container-page: 75rem;
+  --container-prose: 42rem;
+  --container-reading: 34rem;
+
+  --z-sticky: 20;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--surface);
+    color: var(--body);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-wrap: break-word;
+  }
+  h1, h2, h3, h4 { color: var(--ink); text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: color-mix(in srgb, var(--brand) 22%, white); color: var(--ink); }
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button, [role="button"], a, summary { -webkit-tap-highlight-color: transparent; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0s !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* -------- Type scale ---------------------------------------------------- */
+@utility text-display {
+  font-size: clamp(2.5rem, 1.55rem + 3.9vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+  color: var(--ink);
+}
+@utility text-title {
+  font-size: clamp(1.75rem, 1.4rem + 1.3vw, 2.375rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--ink);
+}
+@utility text-heading {
+  font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.625rem);
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+  color: var(--ink);
+}
+@utility text-subheading {
+  font-size: 1.0625rem;
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  font-weight: 600;
+  color: var(--ink);
+}
+@utility text-lead {
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--body);
+  max-width: 38rem;
+}
+@utility text-small { font-size: 0.875rem; line-height: 1.5; }
+@utility text-caption { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.01em; }
+@utility text-label { font-size: 0.8125rem; line-height: 1.25; font-weight: 600; color: var(--ink); letter-spacing: 0; }
+@utility text-eyebrow {
+  font-size: 0.75rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+@utility text-metric {
+  font-size: 1.875rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+@utility text-serial {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  word-break: break-all; /* long serials never overflow */
+}
+@utility tabular { font-variant-numeric: tabular-nums; }
+
+/* -------- Signature surfaces ------------------------------------------- */
+/* Faint engineering grid (hero, result header). Decorative only. */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+@utility bg-grid-fade {
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
+}
+
+/* Registration-mark corners, borrowed from print production. */
+.crop-marks { position: relative; }
+.crop-marks::before, .crop-marks::after, .crop-marks > .crop-b::before, .crop-marks > .crop-b::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--line-strong);
+  border-style: solid;
+  pointer-events: none;
+}
+.crop-marks::before { top: -1px; left: -1px; border-width: 1.5px 0 0 1.5px; }
+.crop-marks::after { top: -1px; right: -1px; border-width: 1.5px 1.5px 0 0; }
+.crop-marks > .crop-b::before { bottom: -1px; left: -1px; border-width: 0 0 1.5px 1.5px; }
+.crop-marks > .crop-b::after { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
+
+/* Scan line used in the hero visual; paused for reduced motion via the global rule. */
+@keyframes scan-sweep {
+  0%, 12% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  88%, 100% { transform: translateY(var(--scan-distance, 120px)); opacity: 0; }
+}
+.scan-line { animation: scan-sweep 3.6s var(--ease-in-out) infinite; }
+
+/* Status seal: the ring draws in once, the icon eases in. Pure CSS so it is SSR-safe,
+   needs no JavaScript and collapses to the final state under reduced motion. */
+@keyframes ring-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes seal-pop { from { opacity: 0; transform: scale(0.86); } to { opacity: 1; transform: none; } }
+.ring-draw { stroke-dasharray: 1; animation: ring-draw 700ms var(--ease-out) both; }
+.seal-pop { animation: seal-pop 240ms var(--ease-out) 260ms both; }
+
+/* Page enter + scroll reveal: CSS only, so content is visible without JavaScript and
+   LCP is never delayed waiting for hydration. Reveal is progressive enhancement. */
+@keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.page-enter { animation: page-in var(--dur-base) var(--ease-out) both; }
+@keyframes reveal-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 5%) entry calc(38% + var(--i, 0) * 5%);
+    }
+  }
+}
+
+/* Skeleton shimmer (static under reduced motion thanks to the global rule). */
+@keyframes shimmer { to { background-position: -200% 0; } }
+.skeleton {
+  background: linear-gradient(90deg, var(--subtle) 25%, color-mix(in srgb, var(--subtle) 55%, white) 50%, var(--subtle) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Visually hidden but available to assistive tech. */
+.sr-only-focusable:not(:focus):not(:focus-within) {
+  position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Print: the result page and label previews should print cleanly. */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}

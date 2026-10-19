@@ -1,4 +1,7 @@
 import { createHash, createHmac, randomBytes } from "node:crypto";
+import { CODE_LENGTH as SHARED_CODE_LENGTH, TOKEN_RE, formatManualCode, normalizeManualCode } from "@/lib/credential-format";
+
+export { formatManualCode, normalizeManualCode };
 
 /**
  * Credentials printed on a physical label.
@@ -13,12 +16,10 @@ import { createHash, createHmac, randomBytes } from "node:crypto";
 
 const TOKEN_BYTES = 32;
 export const TOKEN_LENGTH = 43; // base64url of 32 bytes without padding
-const TOKEN_RE = /^[A-Za-z0-9_-]{43}$/;
 
 // Crockford base32: no I, L, O, U.
 const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
-export const CODE_LENGTH = 20;
-const CODE_RE = /^[0-9ABCDEFGHJKMNPQRSTVWXYZ]{20}$/;
+export const CODE_LENGTH = SHARED_CODE_LENGTH;
 const CODE_HASH_DOMAIN = "qr-part-code:v1:";
 
 export function generateToken(): string {
@@ -40,23 +41,6 @@ export function generateManualCode(): string {
   let out = "";
   for (const b of bytes) out += CROCKFORD[b & 31];
   return out;
-}
-
-export function formatManualCode(canonical: string): string {
-  return canonical.match(/.{1,4}/g)?.join("-") ?? canonical;
-}
-
-/**
- * Accepts what a person might type: lower case, spaces, dashes, and the usual
- * look-alike mistakes (O->0, I/L->1). Returns the canonical 20 characters or null.
- */
-export function normalizeManualCode(input: string): string | null {
-  const cleaned = input
-    .toUpperCase()
-    .replace(/[\s-]+/g, "")
-    .replace(/O/g, "0")
-    .replace(/[IL]/g, "1");
-  return CODE_RE.test(cleaned) ? cleaned : null;
 }
 
 export function hashManualCode(canonical: string): Buffer {

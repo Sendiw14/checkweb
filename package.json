@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,10 +16,13 @@
     "test:db": "vitest run --project db",
     "test:all": "vitest run",
     "test:e2e": "playwright test",
-    "db:migrate": "tsx scripts/migrate.ts",
-    "db:seed:dev": "tsx scripts/seed-dev.ts",
-    "bootstrap:owner": "tsx scripts/bootstrap-owner.ts",
-    "labels:sample": "tsx scripts/sample-label.ts"
+    "db:migrate": "NODE_OPTIONS=--conditions=react-server tsx --env-file=.env.local scripts/migrate.ts",
+    "db:seed:dev": "NODE_OPTIONS=--conditions=react-server tsx --env-file=.env.local scripts/seed-dev.ts",
+    "bootstrap:owner": "NODE_OPTIONS=--conditions=react-server tsx --env-file=.env.local scripts/bootstrap-owner.ts",
+    "labels:sample": "NODE_OPTIONS=--conditions=react-server tsx --env-file=.env.local scripts/sample-label.ts",
+    "dev:stack": "tsx scripts/dev/stack.ts up",
+    "dev:stack:reset": "tsx scripts/dev/stack.ts reset",
+    "dev:stack:down": "tsx scripts/dev/stack.ts down"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -62,6 +67,10 @@
     "vitest": "^5.0.5"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["sharp", "esbuild", "unrs-resolver"]
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ]
   }
 }

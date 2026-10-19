@@ -13,3 +13,4 @@ playwright-report
 .artifacts
 .local-storage
 screenshots/tmp
+.local
