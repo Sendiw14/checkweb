@@ -59,7 +59,7 @@ export function LabelWizard({ batches, defaults, qrByEc, initialBatch, daysToExp
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
       <div>
         <ol aria-label="Progress" className="mb-8 flex items-center gap-2 text-small">
           {STEPS.map((s, i) => (
@@ -103,7 +103,7 @@ export function LabelWizard({ batches, defaults, qrByEc, initialBatch, daysToExp
                 </Field>
                 <fieldset className="grid gap-4 rounded-xl border border-line bg-white p-5">
                   <legend className="px-2 text-label">Label and sheet</legend>
-                  <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-3">
                     <Field label="Paper"><Select value={spec.page} onValueChange={(v) => setSpec((s) => ({ ...s, page: v as LabelSpec["page"] }))}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="A4">A4 (210 × 297)</SelectItem><SelectItem value="LETTER">US Letter</SelectItem></SelectContent></Select></Field>
                     <Field label="Label width (mm)"><Input type="number" step="0.1" value={spec.labelWidthMm} onChange={num("labelWidthMm")} /></Field>
                     <Field label="Label height (mm)"><Input type="number" step="0.1" value={spec.labelHeightMm} onChange={num("labelHeightMm")} /></Field>
@@ -111,7 +111,7 @@ export function LabelWizard({ batches, defaults, qrByEc, initialBatch, daysToExp
                     <Field label="Error correction" hint="Q or H survive scuffing best."><Select value={spec.qrErrorCorrection} onValueChange={(v) => setSpec((s) => ({ ...s, qrErrorCorrection: v as LabelSpec["qrErrorCorrection"] }))}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="M">M (15%)</SelectItem><SelectItem value="Q">Q (25%)</SelectItem><SelectItem value="H">H (30%)</SelectItem></SelectContent></Select></Field>
                     <div className="grid content-end pb-2"><label className="flex items-center gap-2.5 text-small"><Checkbox checked={spec.cutGuides} onCheckedChange={(v) => setSpec((s) => ({ ...s, cutGuides: v === true }))} />Print light cut guides</label></div>
                   </div>
-                  <div className="grid gap-4 sm:grid-cols-4">
+                  <div className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-4">
                     <Field label="Top margin"><Input type="number" step="0.1" value={spec.marginTopMm} onChange={num("marginTopMm")} /></Field>
                     <Field label="Left margin"><Input type="number" step="0.1" value={spec.marginLeftMm} onChange={num("marginLeftMm")} /></Field>
                     <Field label="Gap across"><Input type="number" step="0.1" value={spec.gapXMm} onChange={num("gapXMm")} /></Field>

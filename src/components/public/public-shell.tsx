@@ -31,7 +31,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
   const legal = settings.legalName ?? settings.companyName;
   return (
     <footer className="mt-16 border-t border-line bg-cloud pb-[max(1.5rem,var(--safe-bottom))]">
-      <div className="mx-auto grid w-full max-w-[var(--container-page)] gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div className="max-w-sm space-y-4">
           <Wordmark name={settings.companyName} logoUrl={productImageUrl(settings.logoPath)} />
           <p className="text-small text-quiet">

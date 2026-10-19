@@ -23,7 +23,7 @@ export function SupportPanel({ id, status, assignedTo, staff, meId, unitId, canM
   if (!canManage) return <p className="rounded-lg bg-cloud p-4 text-small text-quiet">Your role can read this case but not change it.</p>;
   const closing = ["resolved", "closed"].includes(next);
   return (
-    <div className="grid gap-6">
+    <div className="grid content-start gap-6">
       <div className="grid gap-3 rounded-xl border border-line bg-white p-5">
         <p className="text-label">Assigned to</p>
         <div className="flex flex-wrap items-center gap-3">

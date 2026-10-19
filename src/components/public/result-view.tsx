@@ -38,7 +38,7 @@ export function ResultView({
   const isVerdict = ["recognized_first", "recognized_repeat", "suspicious", "recalled", "quarantined", "not_released", "retired"].includes(data.status);
 
   return (
-    <section aria-labelledby="result-heading" className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start lg:gap-8" data-status={data.status}>
+    <section aria-labelledby="result-heading" className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start lg:gap-8" data-status={data.status}>
       {/* ---------- verdict ---------- */}
       <div className={cn("relative overflow-hidden rounded-2xl border p-5 sm:p-7", tone.line, tone.soft)}>
         <div aria-hidden className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-60" />
@@ -123,7 +123,7 @@ function Actions({ data, copy, contact, onRetry, onAnother, busy, isVerdict }: {
   const kind = data.status === "recalled" ? "recall_enquiry" : data.status === "suspicious" || data.status === "invalid" || data.status === "revoked" ? "suspected_counterfeit" : "concern";
   const primary = copy.primary;
   return (
-    <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-2.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
       {primary === "retry" && onRetry ? (
         <Button size="lg" onClick={onRetry} loading={busy} className="sm:col-span-2 lg:col-span-1 xl:col-span-2"><RefreshCw aria-hidden />Try again</Button>
       ) : null}

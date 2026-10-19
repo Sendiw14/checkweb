@@ -21,7 +21,7 @@ export default async function LandingPage() {
       {/* ------------------------------ HERO ------------------------------ */}
       <section className="relative isolate overflow-hidden border-b border-line">
         <div aria-hidden className="bg-grid bg-grid-fade absolute inset-0 -z-10 opacity-80" />
-        <div className="mx-auto grid w-full max-w-[var(--container-page)] items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:pb-24 lg:pt-20">
+        <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:pb-24 lg:pt-20">
           <div>
             <p className="text-eyebrow">Part authenticity check</p>
             <h1 className="text-display mt-5 max-w-[14ch]">Know the part in your hands is registered.</h1>
@@ -47,7 +47,7 @@ export default async function LandingPage() {
             <p className="text-eyebrow">How it works</p>
             <h2 className="text-title mt-4">Three steps, about ten seconds.</h2>
           </Reveal>
-          <RevealList as="ol" className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
+          <RevealList as="ol" className="mt-12 grid grid-cols-[minmax(0,1fr)] gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
             {[
               { n: "01", icon: Smartphone, title: "Scan the QR code", body: "Open your phone's camera and point it at the QR code on the part's label. On iPhone and Android a link appears automatically." },
               { n: "02", icon: Globe, title: "Open the official website", body: `Tap the link. It opens this website in your browser. Check that the address bar says ${host}.` },
@@ -68,7 +68,7 @@ export default async function LandingPage() {
 
       {/* ----------------------- WHAT THE CHECK TELLS YOU ------------------ */}
       <section className="border-y border-line bg-cloud py-20 sm:py-28">
-        <div className="mx-auto grid w-full max-w-[var(--container-page)] gap-14 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] gap-14 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <Reveal>
             <p className="text-eyebrow">What we check</p>
             <h2 className="text-title mt-4">An honest answer, not a rubber stamp.</h2>
@@ -120,7 +120,7 @@ export default async function LandingPage() {
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl border border-[#c7d9f8] bg-brand-soft px-6 py-12 sm:px-12 sm:py-16">
               <div aria-hidden className="bg-grid bg-grid-fade absolute inset-0 opacity-60" />
-              <div className="relative grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
+              <div className="relative grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
                 <div>
                   <ShieldQuestion aria-hidden className="size-8 text-brand" strokeWidth={1.6} />
                   <h2 className="text-title mt-5">If something doesn't look right</h2>
@@ -147,7 +147,7 @@ export default async function LandingPage() {
 
       {/* ------------------------------ FAQ -------------------------------- */}
       <section className="pb-4">
-        <div className="mx-auto grid w-full max-w-[var(--container-page)] gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
             <p className="text-eyebrow">Questions</p>
             <h2 className="text-title mt-4">Quick answers</h2>

@@ -12,7 +12,7 @@ export function AuditTable({ rows }: { rows: AuditRow[] }) {
   const [open, setOpen] = React.useState<AuditRow | null>(null);
   const columns = React.useMemo<ColumnDef<AuditRow, unknown>[]>(() => [
     { id: "at", header: "When", cell: ({ row }) => <span className="whitespace-nowrap text-body">{formatDateTime(row.original.at)}</span> },
-    { id: "action", header: "Action", cell: ({ row }) => <span className="font-mono text-small text-ink">{row.original.action}</span> },
+    { id: "action", header: "Action", meta: { mobile: "title" } satisfies ColMeta, cell: ({ row }) => <span className="font-mono text-small text-ink">{row.original.action}</span> },
     { id: "actor", header: "Who", meta: { hideBelow: "md" } satisfies ColMeta, cell: ({ row }) => <span className="block max-w-52 truncate">{row.original.actor ?? <span className="text-quiet">system</span>}</span> },
     { id: "target", header: "Target", meta: { hideBelow: "lg" } satisfies ColMeta, cell: ({ row }) => row.original.targetType ? <span className="text-small text-quiet">{row.original.targetType}<span className="ml-1.5 font-mono text-caption">{row.original.targetId?.slice(0, 8)}</span></span> : "—" },
     { id: "open", header: () => <span className="sr-only">Details</span>, meta: { align: "right" } satisfies ColMeta, cell: ({ row }) => <Button variant="ghost" size="sm" onClick={() => setOpen(row.original)} aria-label={`Details of audit entry ${row.original.id}`}>Details</Button> },

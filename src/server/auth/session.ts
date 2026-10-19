@@ -15,7 +15,7 @@ export type Staff = {
   /** Authenticator assurance level of the current session. */
   aal: "aal1" | "aal2";
   mfaEnrolled: boolean;
-  /** True when policy requires MFA for this role and the session has not completed it. */
+  /** True when the session still owes a second factor: one is enrolled, or policy requires it for this role. */
   mfaRequired: boolean;
 };
 
@@ -52,7 +52,10 @@ export const getSessionState = cache(async (): Promise<SessionState> => {
   } catch (err) {
     log.warn("auth.aal_lookup_failed", { code: (err as { code?: string }).code });
   }
-  const mfaRequired = getEnv().REQUIRE_MFA_FOR_PRIVILEGED && PRIVILEGED_ROLES.includes(m.role) && aal !== "aal2";
+  // An enrolled factor is always enforced (a password-only session must not skip /login/mfa just by
+  // typing an admin URL). Policy additionally forces privileged roles to enrol in the first place.
+  const policyRequires = getEnv().REQUIRE_MFA_FOR_PRIVILEGED && PRIVILEGED_ROLES.includes(m.role);
+  const mfaRequired = aal !== "aal2" && (mfaEnrolled || policyRequires);
   return {
     status: "ok",
     staff: { userId: data.user.id, email: m.email, displayName: m.display_name || m.email, role: m.role, aal, mfaEnrolled, mfaRequired },

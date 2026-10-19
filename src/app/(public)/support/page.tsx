@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Contact support" };
 export default async function SupportPage({ searchParams }: { searchParams: Promise<{ kind?: string; serial?: string; ref?: string }> }) {
   const [s, sp] = await Promise.all([getSiteSettings(), searchParams]);
   return (
-    <div className="mx-auto grid w-full max-w-[var(--container-page)] gap-12 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+    <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] gap-12 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
       <div>
         <p className="text-eyebrow">Support</p>
         <h1 className="text-title mt-4">Tell us what you found.</h1>

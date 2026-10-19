@@ -48,7 +48,7 @@ export default async function TeamPage() {
       </TableWrapper>
       <Card className="mt-6">
         <CardHeader><CardTitle as="h2">What each role can do</CardTitle><CardDescription>Permissions are enforced on the server for every action, not just hidden in the interface.</CardDescription></CardHeader>
-        <CardContent><dl className="grid gap-4 sm:grid-cols-2">{ROLES.map((r) => <div key={r}><dt className="text-small font-semibold text-ink">{ROLE_LABELS[r]}</dt><dd className="text-small text-quiet">{ROLE_DESCRIPTIONS[r]}</dd></div>)}</dl></CardContent>
+        <CardContent><dl className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-2">{ROLES.map((r) => <div key={r}><dt className="text-small font-semibold text-ink">{ROLE_LABELS[r]}</dt><dd className="text-small text-quiet">{ROLE_DESCRIPTIONS[r]}</dd></div>)}</dl></CardContent>
       </Card>
     </>
   );

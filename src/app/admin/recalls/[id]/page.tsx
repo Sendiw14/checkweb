@@ -33,7 +33,7 @@ export default async function RecallPage({ params }: { params: Promise<{ id: str
       {r.status === "active" ? <Alert tone="danger" title="This recall is live" className="mb-6">Customers who check any of the {r.impacted.toLocaleString("en-US")} covered units see the instructions below. Approved by {r.approved_by_email ?? "—"} on {formatDateTime(r.instructions_approved_at)}.</Alert> : null}
       {r.status === "draft" ? <Alert tone="info" title="Draft: not visible to customers" className="mb-6">Add the customer instructions and what the recall covers. Someone with approval rights can then activate it.</Alert> : null}
       {r.status === "closed" ? <Alert tone="success" className="mb-6">Closed {formatDateTime(r.closed_at)}. Covered units show their normal state again.</Alert> : null}
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
         <Card><CardHeader><CardTitle as="h2">Wording</CardTitle><CardDescription>Created by {r.created_by_email ?? "—"}</CardDescription></CardHeader>
           <CardContent><RecallForm mode="edit" recallId={id} status={r.status} canEdit={formEditable} initial={{ title: r.title, reason: r.reason, publicInstructions: r.public_instructions ?? "" }} /></CardContent></Card>
         <div className="grid content-start gap-6">

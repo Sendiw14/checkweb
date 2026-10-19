@@ -28,7 +28,7 @@ export function Field({
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
   return (
     <Ctx.Provider value={{ id, describedBy, invalid: !!error, required, disabled }}>
-      <div className={cn("grid gap-1.5", className)}>
+      <div className={cn("grid content-start gap-1.5", className)}>
         <Label htmlFor={id}>
           {label}
           {required ? <span aria-hidden className="ml-0.5 text-danger">*</span> : null}

@@ -49,7 +49,7 @@ export function BatchForm({ products, defaultProduct }: { products: { id: string
           </Select>
         )} />
       </Field>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2">
         <Field label="Batch code" required error={errors.batchCode?.message} hint="Your production lot or batch identifier. Must be unique."><Input {...register("batchCode")} className="text-serial uppercase" autoCapitalize="characters" spellCheck={false} /></Field>
         <Field label="Manufacturing date" required error={errors.manufacturingDate?.message}><Input {...register("manufacturingDate")} type="date" max={today} /></Field>
       </div>

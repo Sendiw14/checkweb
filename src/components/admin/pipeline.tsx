@@ -9,7 +9,7 @@ export type PipelineStage = { key: string; label: string; count: number; hint: s
  */
 export function Pipeline({ stages, total }: { stages: PipelineStage[]; total: number }) {
   return (
-    <ol className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
+    <ol className="grid grid-cols-[minmax(0,1fr)] gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
       {stages.map((s, i) => {
         const pct = total > 0 ? Math.round((s.count / total) * 100) : 0;
         const complete = total > 0 && s.count >= total;

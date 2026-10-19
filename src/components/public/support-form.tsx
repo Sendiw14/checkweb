@@ -71,7 +71,7 @@ export function SupportForm({ defaults }: { defaults: Defaults }) {
       <fieldset className="grid gap-5 rounded-xl border border-line bg-cloud p-5">
         <legend className="px-2 text-label">How can we reach you?</legend>
         <p className="-mt-2 text-small text-quiet">Give at least an email address or a phone number.</p>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2">
           <Field label="Your name" optionalLabel error={errors.name?.message}><Input {...register("name")} autoComplete="name" /></Field>
           <Field label="Email" error={errors.email?.message}><Input {...register("email")} type="email" autoComplete="email" inputMode="email" /></Field>
           <Field label="Phone" optionalLabel error={errors.phone?.message} className="sm:col-span-2 sm:max-w-[calc(50%-0.625rem)]"><Input {...register("phone")} type="tel" autoComplete="tel" inputMode="tel" /></Field>

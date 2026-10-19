@@ -35,8 +35,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         meta={<><span className="text-serial text-quiet">{p.sku}</span><StatusBadge kind="active" value={p.is_active} /></>}
         actions={canWrite ? <ProductStatusControl productId={id} active={p.is_active} name={p.name} /> : null}
       />
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <div className="grid gap-6">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <div className="grid content-start gap-6">
           <div className="grid grid-cols-3 gap-3 sm:gap-4">
             <Stat label="Batches" value={p.batches} />
             <Stat label="Units" value={p.units} />

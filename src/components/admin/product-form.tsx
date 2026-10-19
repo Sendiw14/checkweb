@@ -38,7 +38,7 @@ export function ProductForm({ mode, productId, initial, canWrite = true }: { mod
       })}
     >
       {formError ? <Alert tone="danger" title="Not saved">{formError}</Alert> : null}
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2">
         <Field label="SKU" required error={errors.sku?.message} hint="Your internal stock code. Stored in capitals.">
           <Input {...register("sku")} disabled={!canWrite} className="text-serial uppercase" autoCapitalize="characters" spellCheck={false} />
         </Field>
@@ -47,7 +47,7 @@ export function ProductForm({ mode, productId, initial, canWrite = true }: { mod
         </Field>
       </div>
       <Field label="Product name" required error={errors.name?.message}><Input {...register("name")} disabled={!canWrite} maxLength={160} /></Field>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2">
         <Field label="Brand" optionalLabel error={errors.brand?.message}><Input {...register("brand")} disabled={!canWrite} /></Field>
         <Field label="Category" optionalLabel error={errors.category?.message}><Input {...register("category")} disabled={!canWrite} placeholder="e.g. Brakes" /></Field>
       </div>

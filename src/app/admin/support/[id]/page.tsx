@@ -29,7 +29,7 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
     <>
       <PageHeader crumbs={[{ label: "Support cases", href: "/admin/support" }, { label: c.reference }]} title={c.subject} meta={<><span className="font-mono text-small text-quiet">{c.reference}</span><StatusBadge kind="support" value={c.status} /><span className="text-small text-quiet">{(SUPPORT_KIND_LABELS as Record<string, string>)[c.kind]} · received {formatDateTime(c.created_at)}</span></>} />
       {purged ? <Alert tone="info" className="mb-6" title="Personal details removed">This case was anonymised on {formatDateTime(c.purged_at)} under the retention policy.</Alert> : null}
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
         <div className="grid content-start gap-6">
           <Card><CardHeader><CardTitle as="h2">Message</CardTitle></CardHeader><CardContent><p className="whitespace-pre-line text-body">{c.message}</p></CardContent></Card>
           <Card><CardHeader><CardTitle as="h2">Contact and part</CardTitle></CardHeader>

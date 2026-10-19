@@ -153,7 +153,7 @@ function IdlePanel({ contact }: { contact: PublicContact }) {
 
 function LoadingPanel({ company }: { company: string }) {
   return (
-    <div className="mx-auto grid max-w-5xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]" aria-busy="true">
+    <div className="mx-auto grid grid-cols-[minmax(0,1fr)] max-w-5xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]" aria-busy="true">
       <div className="rounded-2xl border border-line bg-cloud p-5 sm:p-7">
         <p className="text-eyebrow !text-quiet">Checking…</p>
         <div className="mt-5 flex items-start gap-4">

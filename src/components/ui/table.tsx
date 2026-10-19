@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 /** Scrolls horizontally inside its own box (never the page) and stays keyboard reachable. */
 export function TableWrapper({ className, label, ...props }: React.ComponentProps<"div"> & { label: string }) {
-  return <div role="region" aria-label={label} tabIndex={0} className={cn("w-full overflow-x-auto rounded-lg", className)} {...props} />;
+  return <div role="region" aria-label={label} tabIndex={0} className={cn("relative w-full overflow-x-auto rounded-lg", className)} {...props} />;
 }
 export function Table({ className, ...props }: React.ComponentProps<"table">) {
   return <table className={cn("w-full caption-bottom border-collapse text-small", className)} {...props} />;

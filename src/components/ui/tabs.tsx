@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export const Tabs = T.Root;
 export function TabsList({ className, ...props }: React.ComponentProps<typeof T.List>) {
-  return <T.List className={cn("flex gap-1 overflow-x-auto border-b border-line [scrollbar-width:none]", className)} {...props} />;
+  return <T.List className={cn("relative flex gap-1 overflow-x-auto border-b border-line [scrollbar-width:none]", className)} {...props} />;
 }
 export function TabsTrigger({ className, ...props }: React.ComponentProps<typeof T.Trigger>) {
   return (

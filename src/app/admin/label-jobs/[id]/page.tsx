@@ -31,7 +31,7 @@ export default async function LabelJobPage({ params, searchParams }: { params: P
         title={<>{job.kind === "reissue" ? "Label replacement" : "Labels"} for <span className="font-mono">{job.batch_code}</span></>}
         meta={<><StatusBadge kind="job" value={job.state} /><Link href={`/admin/batches/${job.batch_id}`} className="text-small font-medium text-body hover:text-brand">{job.product_name}</Link><span className="text-small text-quiet">started {formatDateTime(job.created_at)} by {job.created_by_email ?? "system"}</span></>}
       />
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
         <JobRunner jobId={id} state={job.state} requested={job.requested_quantity} done={job.units_done} error={job.error_summary} autostart={sp.autostart === "1"} can={{ generate: can(staff.role, "labels.generate"), download: can(staff.role, "labels.download"), confirm: can(staff.role, "labels.confirm") }}
           parts={artifacts.map((a) => ({ partNo: a.part_no, units: a.units_count, first: a.first_serial, last: a.last_serial, bytes: Number(a.bytes), expiresAt: a.expires_at.toISOString(), deleted: !!a.deleted_at || isPast(a.expires_at), printed: a.printed, applied: a.applied }))} />
         <div className="grid content-start gap-6">

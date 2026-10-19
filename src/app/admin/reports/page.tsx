@@ -51,9 +51,9 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
         <Stat label="Open investigations" value={open} tone={open ? "warning" : "neutral"} hint="Right now" href="/admin/investigations" />
       </section>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <Card><CardHeader><CardTitle as="h2">Daily activity</CardTitle><CardDescription>Customer checks by outcome. Staff QC and automated traffic excluded.</CardDescription></CardHeader><CardContent><ActivityChart data={series} /></CardContent></Card>
-        <div className="grid content-start gap-6">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] content-start gap-6">
           <Card><CardHeader><CardTitle as="h2">Outcomes</CardTitle></CardHeader><CardContent>
             {outcomes.length === 0 ? <p className="text-small text-quiet">No checks in this range.</p> : <table className="w-full text-small"><caption className="sr-only">Outcomes in range</caption><tbody>{outcomes.map((o) => <tr key={o.result} className="border-b border-line last:border-0"><td className="py-2.5"><StatusBadge kind="result" value={o.result} /></td><td className="tabular py-2.5 text-right font-medium text-ink">{formatNumber(o.n)}</td><td className="tabular w-14 py-2.5 text-right text-quiet">{total ? Math.round((o.n / total) * 100) : 0}%</td></tr>)}</tbody></table>}
           </CardContent></Card>
@@ -63,12 +63,12 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
         </div>
       </div>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
-        <Card><CardHeader><CardTitle as="h2">Registered units by product</CardTitle></CardHeader><CardContent className="overflow-x-auto">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <Card><CardHeader><CardTitle as="h2">Registered units by product</CardTitle></CardHeader><CardContent className="relative overflow-x-auto">
           <table className="w-full min-w-[34rem] text-small"><caption className="sr-only">Units by product</caption><thead className="text-caption uppercase tracking-wider text-quiet"><tr><th scope="col" className="pb-2 text-left">Product</th><th scope="col" className="pb-2 text-right">Total</th><th scope="col" className="pb-2 text-right">Released</th><th scope="col" className="pb-2 text-right">In process</th><th scope="col" className="pb-2 text-right">Held</th></tr></thead>
             <tbody>{products.map((p) => <tr key={p.id} className="border-t border-line"><th scope="row" className="py-2.5 text-left font-medium"><Link href={`/admin/products/${p.id}`} className="text-ink hover:text-brand">{p.name}</Link><span className="block text-serial text-quiet">{p.sku}</span></th><td className="tabular py-2.5 text-right">{formatNumber(p.total)}</td><td className="tabular py-2.5 text-right text-success">{formatNumber(p.released)}</td><td className="tabular py-2.5 text-right">{formatNumber(p.pending)}</td><td className="tabular py-2.5 text-right">{formatNumber(p.quarantined)}</td></tr>)}</tbody></table>
         </CardContent></Card>
-        <div className="grid content-start gap-6">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] content-start gap-6">
           <Card><CardHeader><CardTitle as="h2">Label jobs</CardTitle><CardDescription>Started in the selected range</CardDescription></CardHeader><CardContent>
             {jobs.byState.length === 0 ? <p className="text-small text-quiet">No label jobs in this range.</p> : <ul className="grid gap-2.5">{jobs.byState.map((s) => <li key={s.state} className="flex items-center justify-between gap-3 text-small"><StatusBadge kind="job" value={s.state} /><span className="tabular text-body">{formatNumber(s.n)} job{s.n === 1 ? "" : "s"} · {formatNumber(s.units)} labels</span></li>)}</ul>}
             {jobs.failures.length ? <div className="mt-4 border-t border-line pt-3"><p className="text-label">Recent failures</p><ul className="mt-2 grid gap-2">{jobs.failures.map((f) => <li key={f.id} className="text-small"><Link className="font-mono text-brand hover:underline" href={`/admin/label-jobs/${f.id}`}>{f.batch_code}</Link><span className="block text-caption text-quiet">{f.error_summary}</span></li>)}</ul></div> : null}

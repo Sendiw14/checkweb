@@ -38,7 +38,7 @@ export function RecallScope({ recallId, scope, choices, editable }: { recallId: 
   );
 
   return (
-    <div className="grid gap-5">
+    <div className="grid content-start gap-5">
       {empty ? <p className="rounded-lg border border-dashed border-line-strong bg-cloud px-4 py-6 text-center text-small text-quiet">Nothing is covered yet. Choose a product, a batch, or specific serial numbers.</p> : (
         <div className="grid gap-4">
           {scope.products.length ? <div><p className="mb-2 text-caption font-semibold uppercase tracking-wider text-quiet">Whole products</p><ul className="flex flex-wrap gap-2">{scope.products.map((p) => chip(<>{p.name} <span className="text-serial text-quiet">{p.sku}</span></>, () => remove("product", p.id), p.id))}</ul></div> : null}

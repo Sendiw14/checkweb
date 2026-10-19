@@ -39,7 +39,7 @@ export function CompanyForm({ initial, canWrite }: { initial: CompanyInput; canW
   return (
     <form noValidate className="grid gap-5" onSubmit={submit}>
       {err ? <Alert tone="danger">{err}</Alert> : null}
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2">
         <Field label="Company name" required error={errors.companyName?.message} hint="Shown to customers everywhere."><Input {...register("companyName")} disabled={!canWrite} /></Field>
         <Field label="Legal name" optionalLabel error={errors.legalName?.message} hint="Used in the privacy notice and terms."><Input {...register("legalName")} disabled={!canWrite} /></Field>
         <Field label="Support email" optionalLabel error={errors.supportEmail?.message}><Input {...register("supportEmail")} type="email" disabled={!canWrite} /></Field>
@@ -96,7 +96,7 @@ export function LabelDefaultsForm({ initial, canWrite }: { initial: LabelSpec; c
     <form noValidate className="grid gap-5" onSubmit={submit}>
       {err ? <Alert tone="danger">{err}</Alert> : null}
       <p className="text-small text-body">Starting values for the label wizard. Each job can still override them, and the wizard checks every layout for physical fit and scannability.</p>
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 sm:grid-cols-3">
         <Field label="Paper"><Controller control={control} name="page" render={({ field }) => <Select value={field.value} onValueChange={field.onChange} disabled={!canWrite}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="A4">A4</SelectItem><SelectItem value="LETTER">US Letter</SelectItem></SelectContent></Select>} /></Field>
         {n("labelWidthMm", "Label width (mm)")}{n("labelHeightMm", "Label height (mm)")}{n("qrSizeMm", "QR size (mm)")}
         <Field label="Error correction"><Controller control={control} name="qrErrorCorrection" render={({ field }) => <Select value={field.value} onValueChange={field.onChange} disabled={!canWrite}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="M">M (15%)</SelectItem><SelectItem value="Q">Q (25%)</SelectItem><SelectItem value="H">H (30%)</SelectItem></SelectContent></Select>} /></Field>
@@ -127,7 +127,7 @@ export function RiskForm({ initial, canWrite }: { initial: RiskInput; canWrite: 
     <form noValidate className="grid gap-5" onSubmit={submit}>
       {err ? <Alert tone="danger">{err}</Alert> : null}
       <Alert tone="info" title="How these work">Each rule counts signals about one part from customer checks only (staff QC and bots are excluded). They never block a customer; they decide whether the result shows a neutral note and whether an investigation is opened for a person to review. Changes apply to the next check.</Alert>
-      <div className="grid gap-5 sm:grid-cols-2">{RISK_FIELDS.map((f) => <Field key={f.name} label={f.label} hint={f.help} error={errors[f.name]?.message as string | undefined}><Input type="number" inputMode="numeric" {...register(f.name)} disabled={!canWrite} /></Field>)}</div>
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-2">{RISK_FIELDS.map((f) => <Field key={f.name} label={f.label} hint={f.help} error={errors[f.name]?.message as string | undefined}><Input type="number" inputMode="numeric" {...register(f.name)} disabled={!canWrite} /></Field>)}</div>
       <SaveBar dirty={isDirty} loading={isSubmitting} canWrite={canWrite} />
     </form>
   );
@@ -141,7 +141,7 @@ export function RetentionForm({ initial, canWrite }: { initial: RetentionInput; 
     <form noValidate className="grid gap-5" onSubmit={submit}>
       {err ? <Alert tone="danger">{err}</Alert> : null}
       <p className="text-small text-body">How long personal and security data is kept. A scheduled job applies these daily; the privacy notice quotes them.</p>
-      <div className="grid gap-5 sm:grid-cols-3">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 sm:grid-cols-3">
         <Field label="Network fingerprints (days)" hint="Then the coarse network hash and country are erased from events." error={errors.verificationNetworkDays?.message as string | undefined}><Input type="number" {...register("verificationNetworkDays")} disabled={!canWrite} /></Field>
         <Field label="Support cases (days)" hint="Then resolved cases are anonymised." error={errors.supportCaseDays?.message as string | undefined}><Input type="number" {...register("supportCaseDays")} disabled={!canWrite} /></Field>
         <Field label="Label PDFs (days)" hint="Then the files (live codes) are deleted from storage." error={errors.labelArtifactDays?.message as string | undefined}><Input type="number" {...register("labelArtifactDays")} disabled={!canWrite} /></Field>

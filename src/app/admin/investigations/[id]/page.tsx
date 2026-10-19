@@ -33,7 +33,7 @@ export default async function InvestigationPage({ params }: { params: Promise<{ 
       />
       {resolved ? <Alert tone={inv.status === "resolved_confirmed" ? "danger" : "success"} title={`${inv.status === "resolved_confirmed" ? "Resolved: counterfeit confirmed" : inv.status === "dismissed" ? "Dismissed" : "Resolved: benign"}`} className="mb-6"><span className="whitespace-pre-line">{inv.resolution_notes}</span><span className="mt-1 block text-caption text-quiet">{inv.resolved_by_email} · {formatDateTime(inv.resolved_at)}</span></Alert> : null}
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
         <div className="grid content-start gap-6">
           <Card>
             <CardHeader><CardTitle as="h2">What triggered it</CardTitle><CardDescription>{inv.origin === "risk_rule" ? "Raised automatically by explainable rules" : inv.origin === "manual" ? "Opened by a person" : "Opened from a support case"}</CardDescription></CardHeader>

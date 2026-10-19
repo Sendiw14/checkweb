@@ -59,7 +59,7 @@ export function JobRunner({ jobId, state, requested, done, error, autostart, par
   const pct = requested ? Math.round((live.done / requested) * 100) : 0;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid content-start gap-6">
       <section aria-label="Progress" className="rounded-xl border border-line bg-white p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3"><StatusBadge kind="job" value={live.state} />{running ? <span className="flex items-center gap-1.5 text-small text-quiet"><Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />Working…</span> : null}</div>
@@ -91,7 +91,7 @@ export function JobRunner({ jobId, state, requested, done, error, autostart, par
                     <p className="mt-1 text-caption text-quiet">{(p.bytes / 1024).toFixed(0)} KB · {p.deleted ? "deleted" : `available until ${formatDateTime(p.expiresAt)}`}</p></div>
                   {can.download ? (p.deleted ? <span className="text-small text-quiet">Expired</span> : <Button asChild variant="secondary" size="sm"><a href={`/api/admin/label-jobs/${jobId}/download/${p.partNo}`} download><Download aria-hidden />Download PDF</a></Button>) : null}
                 </div>
-                <div className="mt-4 grid gap-3 border-t border-line pt-4 sm:grid-cols-[1fr_auto] sm:items-center">
+                <div className="mt-4 grid grid-cols-[minmax(0,1fr)] gap-3 border-t border-line pt-4 sm:grid-cols-[1fr_auto] sm:items-center">
                   <p className="tabular text-small text-body"><span className="text-ink">{formatNumber(p.printed + p.applied)}</span> printed · <span className="text-ink">{formatNumber(p.applied)}</span> applied of {formatNumber(p.units)}</p>
                   {can.confirm ? (
                     <div className="flex flex-wrap gap-2">

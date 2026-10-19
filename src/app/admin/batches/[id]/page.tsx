@@ -50,7 +50,7 @@ export default async function BatchPage({ params }: { params: Promise<{ id: stri
         {stats.registered < b.expected_quantity ? <p className="mt-2 text-caption text-quiet">{formatNumber(b.expected_quantity - stats.registered)} expected units are not registered yet.</p> : null}
       </section>
 
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
         <div className="grid content-start gap-6">
           <Card>
             <CardHeader className="flex-row items-start justify-between gap-3"><div><CardTitle as="h2">Label jobs</CardTitle><CardDescription>Print-ready PDF generation for this batch</CardDescription></div>

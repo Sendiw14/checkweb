@@ -12,8 +12,10 @@ export const metadata: Metadata = { title: { default: "Staff workspace", templat
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   // allowMfaPending lets the security page itself render for people who still have to enrol.
   const staff = await requireStaff({ next: "/admin/dashboard", allowMfaPending: true });
-  const [settings, alerts] = await Promise.all([getSiteSettings(), getAlerts(staff)]);
-  const allowed = PERMISSIONS.filter((p) => can(staff.role, p));
+  // While the second factor is still owed, show chrome only: no navigation and no operational counts.
+  const pending = staff.mfaRequired;
+  const [settings, alerts] = await Promise.all([getSiteSettings(), pending ? Promise.resolve([]) : getAlerts(staff)]);
+  const allowed = pending ? [] : PERMISSIONS.filter((p) => can(staff.role, p));
   const logo = productImageUrl(settings.logoPath);
   return (
     <div className="min-h-dvh bg-cloud">

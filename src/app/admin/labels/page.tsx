@@ -27,7 +27,7 @@ export default async function LabelsPage({ searchParams }: { searchParams: Promi
     <>
       <PageHeader title="QR labels" description="Issue secret codes for a batch, print the sheets, then confirm what was printed and applied."
         actions={can(staff.role, "labels.generate") ? <Button asChild><Link href="/admin/labels/new"><Plus aria-hidden />Generate labels</Link></Button> : null} />
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div>
           <ListToolbar showSearchless filters={[{ param: "state", label: "State", options: ["queued", "running", "completed", "failed", "cancelled"].map((s) => ({ value: s, label: s[0]!.toUpperCase() + s.slice(1) })) }]} />
           <div className="mt-4">

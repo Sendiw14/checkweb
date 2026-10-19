@@ -47,7 +47,7 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] xl:items-start">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] xl:items-start">
         <Card>
           <CardHeader>
             <CardTitle as="h2">Customer checks, last 14 days</CardTitle>
@@ -78,7 +78,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-6 grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-2 xl:grid-cols-3">
         {d.recentScans ? (
           <Card className="xl:col-span-1">
             <CardHeader className="flex-row items-start justify-between gap-3"><div><CardTitle as="h2">Recent customer checks</CardTitle><CardDescription>Latest outcomes, newest first</CardDescription></div><Button asChild variant="link" className="text-small"><Link href="/admin/scans">All<ArrowRight aria-hidden /></Link></Button></CardHeader>

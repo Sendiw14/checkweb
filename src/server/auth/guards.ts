@@ -15,7 +15,11 @@ export async function requireStaff(opts: { next?: string; allowMfaPending?: bool
   const state = await getSessionState();
   if (state.status === "anonymous") redirect(`/login${opts.next ? `?next=${encodeURIComponent(opts.next)}` : ""}`);
   if (state.status !== "ok") redirect(`/login?error=${state.status === "suspended" ? "suspended" : "no_access"}`);
-  if (state.staff.mfaRequired && !opts.allowMfaPending) redirect(state.staff.mfaEnrolled ? "/login/mfa" : "/admin/security?required=1");
+  // allowMfaPending exists so someone who has NOT enrolled yet can reach the enrolment page. A session that
+  // owes a code for an already-enrolled authenticator never gets in without it.
+  if (state.staff.mfaRequired && (!opts.allowMfaPending || state.staff.mfaEnrolled)) {
+    redirect(state.staff.mfaEnrolled ? "/login/mfa" : "/admin/security?required=1");
+  }
   return state.staff;
 }
 
@@ -37,6 +41,17 @@ export async function assertPermission(permission: Permission): Promise<Staff> {
   return state.staff;
 }
 
+/**
+ * Like assertPermission but with no permission requirement and tolerant of a session that still owes
+ * its second factor. Only for self-service account security (enrol an authenticator, change own password).
+ */
+export async function assertSignedIn(): Promise<Staff> {
+  const state = await getSessionState();
+  if (state.status !== "ok") throw new ForbiddenError("authenticated");
+  if (state.staff.mfaRequired && state.staff.mfaEnrolled) throw new ForbiddenError("authenticated"); // code still owed
+  return state.staff;
+}
+
 export type ActionResult<T = undefined> =
   | ({ ok: true } & (T extends undefined ? { data?: undefined } : { data: T }))
   | { ok: false; error: string; fieldErrors?: Partial<Record<string, string>>; code?: "forbidden" | "validation" | "conflict" | "unavailable" | "failed" };
@@ -49,6 +64,18 @@ export async function authorized<T>(permission: Permission, run: (staff: Staff) 
   } catch (err) {
     if (err instanceof ForbiddenError) {
       return { ok: false, code: "forbidden", error: "You don't have permission to do that." } as ActionResult<T>;
+    }
+    throw err;
+  }
+}
+
+/** Self-service wrapper: any active staff member acting on their own account. */
+export async function signedIn<T>(run: (staff: Staff) => Promise<ActionResult<T>>): Promise<ActionResult<T>> {
+  try {
+    return await run(await assertSignedIn());
+  } catch (err) {
+    if (err instanceof ForbiddenError) {
+      return { ok: false, code: "forbidden", error: "Your session has ended. Sign in again to continue." } as ActionResult<T>;
     }
     throw err;
   }

@@ -10,7 +10,7 @@ export async function AuthShell({ title, description, children, footer }: { titl
   const s = await getSiteSettings();
   const qr = qrPath(`${siteUrl()}/verify`, "M");
   return (
-    <div className="grid min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
+    <div className="grid grid-cols-[minmax(0,1fr)] min-h-dvh lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
       <div className="flex flex-col px-5 py-8 sm:px-10">
         <Link href="/" className="w-fit rounded-md" aria-label={`${s.companyName} home`}><Wordmark name={s.companyName} logoUrl={productImageUrl(s.logoPath)} /></Link>
         <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-[26rem] flex-1 flex-col justify-center py-12 outline-none">

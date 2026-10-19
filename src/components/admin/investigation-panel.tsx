@@ -25,7 +25,7 @@ export function InvestigationPanel({ id, status, assignedTo, staff, meId, canMan
   if (!canManage) return null;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid content-start gap-6">
       {open ? (
         <div className="grid gap-4 rounded-xl border border-line bg-white p-5">
           <p className="text-label">Assignment</p>

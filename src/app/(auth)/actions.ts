@@ -83,7 +83,7 @@ export async function verifyMfa(input: unknown, next?: string): Promise<AuthResu
   if (chErr || !ch) return { ok: false, error: "We couldn't start the check. Please try again." };
   const { error } = await supabase.auth.mfa.verify({ factorId: totp.id, challengeId: ch.id, code: parsed.data.code });
   if (error) {
-    await writeAudit(null, { action: "auth.mfa_failed", targetType: "user", targetId: userId }).catch(() => {});
+    await writeAudit("staff" in state ? state.staff : null, { action: "auth.mfa_failed", targetType: "user", targetId: userId }).catch(() => {});
     return { ok: false, error: "That code didn't work. Codes change every 30 seconds; try the latest one.", fieldErrors: { code: "Incorrect or expired code." } };
   }
   redirect(safeNext(next));
