@@ -12,6 +12,8 @@ const config = [
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       // Plaintext tokens must never reach logs; force callers through the redacting logger.
       "no-console": "error",
+      // `ok ? toast.success(..) : toast.error(..)` is the house style for result handling.
+      "@typescript-eslint/no-unused-expressions": ["warn", { allowTernary: true, allowShortCircuit: true }],
       // Apostrophes and quotes are fine in JSX text; keep the rule only for the characters that are real typos.
       "react/no-unescaped-entities": ["error", { forbid: [">", "}"] }],
     },

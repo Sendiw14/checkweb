@@ -56,7 +56,7 @@ export async function GET(request: Request) {
   if (can(staff.role, "investigations.read")) {
     jobs.push(pool.query<{ id: string; reference: string; summary: string }>(
       `select id, reference, summary from public.investigations where reference like $1 order by opened_at desc limit 4`, [escapeLike(q.toUpperCase()) + "%"],
-    ).then((r) => { for (const x of r.rows) hits.push({ type: "investigation", id: x.id, title: x.reference, subtitle: x.summary, href: `/admin/investigations?case=${x.id}` }); }));
+    ).then((r) => { for (const x of r.rows) hits.push({ type: "investigation", id: x.id, title: x.reference, subtitle: x.summary, href: `/admin/investigations/${x.id}` }); }));
   }
   await Promise.all(jobs);
   return Response.json({ hits: hits.slice(0, 16) }, { headers });

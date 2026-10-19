@@ -207,6 +207,22 @@ describe("batch-level operations", () => {
     expect(states).toEqual([{ lifecycle_status: "qc_passed", c: 2 }, { lifecycle_status: "released", c: 4 }]);
   });
 
+  it("releasing individual units also advances their batch to released", async () => {
+    const p = await createProduct();
+    const b = await createBatch(p.id, 2);
+    const units = await registerUnits(b.id, 2);
+    for (const u of units) await issueToken(u.id);
+    const ids = units.map((u) => u.id);
+    await admin.query("select public.set_label_status($1::uuid[], 'printed', null)", [ids]);
+    await admin.query("select public.set_label_status($1::uuid[], 'applied', null)", [ids]);
+    await admin.query("select public.transition_units('qc_passed', null, null, null, $1::uuid[])", [ids]);
+    expect((await admin.query("select release_status from public.manufacturing_batches where id = $1", [b.id])).rows[0].release_status).toBe("pending");
+    await admin.query("select public.transition_units('released', null, null, null, $1::uuid[])", [[ids[0]]]);
+    const row = (await admin.query("select release_status, approved_at from public.manufacturing_batches where id = $1", [b.id])).rows[0];
+    expect(row.release_status).toBe("released");
+    expect(row.approved_at).not.toBeNull();
+  });
+
   it("QC hold blocks release and registering units", async () => {
     const p = await createProduct();
     const b = await createBatch(p.id, 4);

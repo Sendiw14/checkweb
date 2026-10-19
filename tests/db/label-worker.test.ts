@@ -13,7 +13,7 @@ import { TEST_DB } from "./support/urls";
 
 const base = `127.0.0.1:${process.env.TEST_PG_PORT ?? "5432"}/${TEST_DB}`;
 Object.assign(process.env, {
-  NODE_ENV: "test", DATABASE_URL: `postgres://app_server:app_server_pw@${base}`, VERIFIER_DATABASE_URL: `postgres://app_verifier:app_verifier_pw@${base}`,
+  NODE_ENV: "test", DATABASE_URL: `postgres://app_server:app_server_dev_pw@${base}`, VERIFIER_DATABASE_URL: `postgres://app_verifier:app_verifier_dev_pw@${base}`,
   SUPABASE_URL: "http://127.0.0.1:54321", SUPABASE_ANON_KEY: "a".repeat(40), SUPABASE_SERVICE_ROLE_KEY: "b".repeat(40),
   PUBLIC_SITE_URL: "https://verify.example.com", NETWORK_HASH_PEPPER: "test-pepper-".padEnd(40, "x"), ARTIFACT_STORAGE: "local",
 });

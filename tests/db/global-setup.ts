@@ -32,8 +32,8 @@ export default async function setup() {
   const after = new pg.Client({ connectionString: adminUrl(TEST_DB) });
   await after.connect();
   try {
-    await after.query(`alter role app_server login password 'app_server_pw'`);
-    await after.query(`alter role app_verifier login password 'app_verifier_pw'`);
+    await after.query(`alter role app_server login password 'app_server_dev_pw'`);
+    await after.query(`alter role app_verifier login password 'app_verifier_dev_pw'`);
   } finally {
     await after.end();
   }

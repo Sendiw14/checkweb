@@ -7,8 +7,8 @@ import { TEST_DB } from "./support/urls";
 const base = `127.0.0.1:${process.env.TEST_PG_PORT ?? "5432"}/${TEST_DB}`;
 Object.assign(process.env, {
   NODE_ENV: "test",
-  DATABASE_URL: `postgres://app_server:app_server_pw@${base}`,
-  VERIFIER_DATABASE_URL: `postgres://app_verifier:app_verifier_pw@${base}`,
+  DATABASE_URL: `postgres://app_server:app_server_dev_pw@${base}`,
+  VERIFIER_DATABASE_URL: `postgres://app_verifier:app_verifier_dev_pw@${base}`,
   SUPABASE_URL: "http://127.0.0.1:54321",
   SUPABASE_ANON_KEY: "a".repeat(40),
   SUPABASE_SERVICE_ROLE_KEY: "b".repeat(40),
@@ -140,7 +140,7 @@ describe("failure behaviour", () => {
     await closeAppPools(); // pools are process-global; drop the healthy ones first
     vi.resetModules();
     const saved = { ...process.env };
-    process.env.VERIFIER_DATABASE_URL = "postgres://app_verifier:app_verifier_pw@127.0.0.1:1/nowhere";
+    process.env.VERIFIER_DATABASE_URL = "postgres://app_verifier:app_verifier_dev_pw@127.0.0.1:1/nowhere";
     process.env.DATABASE_URL = process.env.VERIFIER_DATABASE_URL;
     const lines: string[] = [];
     const { setLogSink: sink } = await import("@/server/logger");
