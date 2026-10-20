@@ -38,10 +38,10 @@ export function ResultView({
   const isVerdict = ["recognized_first", "recognized_repeat", "suspicious", "recalled", "quarantined", "not_released", "retired"].includes(data.status);
 
   return (
-    <section aria-labelledby="result-heading" className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-start lg:gap-8" data-status={data.status}>
+    <section aria-labelledby="result-heading" className="verification-result-layout grid grid-cols-[minmax(0,1fr)] gap-4 sm:gap-5 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start lg:gap-7" data-status={data.status}>
       {/* ---------- verdict ---------- */}
-      <div className={cn("relative overflow-hidden rounded-2xl border p-5 sm:p-7", tone.line, tone.soft)}>
-        <div aria-hidden className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-60" />
+      <div className={cn("verification-verdict relative overflow-hidden rounded-xl border p-4 sm:rounded-2xl sm:p-6", tone.line, tone.soft)}>
+        <div aria-hidden className="verification-verdict-texture bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-25" />
         <div className="relative">
           <p className={cn("flex items-center justify-between gap-3 text-eyebrow", tone.text)} style={{ color: undefined }}>
             <span>Verification result</span>
@@ -49,14 +49,14 @@ export function ResultView({
               REF {shortRequestRef(data.requestId)}
             </span>
           </p>
-          <div className="mt-5 flex items-start gap-4">
-            <StatusSeal tone={copy.tone} icon={copy.icon} size={72} />
+          <div className="mt-4 flex items-start gap-3 sm:gap-4">
+            <StatusSeal tone={copy.tone} icon={copy.icon} size={64} className="sm:!h-[72px] sm:!w-[72px]" />
             <div className="min-w-0 flex-1 pt-1">
               <h1 id="result-heading" ref={headingRef} tabIndex={-1} className="text-title outline-none">{copy.heading}</h1>
               {copy.chip ? <Badge tone="neutral" className="mt-2 bg-white/80">{copy.chip}</Badge> : null}
             </div>
           </div>
-          <p className="mt-4 text-lead !max-w-none">{copy.lead}</p>
+          <p className="mt-3 text-small leading-relaxed sm:mt-4 sm:text-lead sm:!max-w-none">{copy.lead}</p>
           {copy.next ? <p className="mt-3 text-small text-body">{copy.next}</p> : null}
         </div>
       </div>
@@ -73,9 +73,9 @@ export function ResultView({
         ) : null}
 
         {hasProduct ? (
-          <div className="crop-marks border border-line bg-white" aria-label="Part details" role="group">
+          <div className="verification-product crop-marks overflow-hidden rounded-xl border border-line bg-white" aria-label="Part details" role="group">
             <ProductImage src={data.product?.imageUrl} alt={`Photo of ${data.product?.name}`} className="aspect-[16/9] border-b border-line" />
-            <div className="px-4 pb-1 pt-4 sm:px-5">
+            <div className="px-4 pb-2 pt-4 sm:px-5">
               {data.product?.brand || data.product?.category ? (
                 <p className="text-caption text-quiet">{[data.product?.brand, data.product?.category].filter(Boolean).join(" · ")}</p>
               ) : null}

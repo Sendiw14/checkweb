@@ -12,7 +12,7 @@ const NO_STORE = { "Cache-Control": "private, no-store, max-age=0", "X-Content-T
  * Label PDFs contain LIVE credentials. This is the only way to get one: authorised (labels.download),
  * rate-limited, audited, and (with Supabase Storage) a 60-second signed URL rather than a public link.
  */
-export async function GET(_req: Request, ctx: RouteContext<"/api/admin/label-jobs/[id]/download/[part]">) {
+export async function GET(_req: Request, ctx: { params: Promise<{ id: string; part: string }> }) {
   const { id, part } = await ctx.params;
   let staff;
   try {

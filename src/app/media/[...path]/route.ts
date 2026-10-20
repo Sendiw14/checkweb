@@ -10,7 +10,7 @@ const TYPES: Record<string, string> = { jpg: "image/jpeg", png: "image/png", web
  * In production images come straight from the public Supabase bucket and this route is a 404.
  * It can only ever read under products/ and never touches the private artifact bucket.
  */
-export async function GET(_req: Request, ctx: RouteContext<"/media/[...path]">) {
+export async function GET(_req: Request, ctx: { params: Promise<{ path: string[] }> }) {
   if (getEnv().ARTIFACT_STORAGE !== "local") return new Response("Not found", { status: 404 });
   const { path } = await ctx.params;
   const key = path.join("/");

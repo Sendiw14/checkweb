@@ -9,8 +9,8 @@ import { productImageUrl } from "@/server/storage/images";
 export function SiteHeader({ settings }: { settings: SiteSettings }) {
   const logo = productImageUrl(settings.logoPath);
   return (
-    <header className="sticky top-0 z-[var(--z-sticky)] border-b border-line bg-white/90 pt-[var(--safe-top)] backdrop-blur-md supports-[backdrop-filter]:bg-white/80">
-      <div className="mx-auto flex h-16 w-full max-w-[var(--container-page)] items-center justify-between gap-4 px-4 sm:px-6">
+    <header className="public-site-header sticky top-0 z-[var(--z-sticky)] border-b border-line bg-white/90 pt-[var(--safe-top)] backdrop-blur-md supports-[backdrop-filter]:bg-white/80">
+      <div className="public-site-header-inner mx-auto flex h-16 w-full max-w-[var(--container-page)] items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" aria-label={`${settings.companyName} home`} className="rounded-md">
           <Wordmark name={settings.companyName} logoUrl={logo} />
         </Link>
@@ -30,7 +30,7 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
   const year = new Date().getUTCFullYear();
   const legal = settings.legalName ?? settings.companyName;
   return (
-    <footer className="mt-16 border-t border-line bg-cloud pb-[max(1.5rem,var(--safe-bottom))]">
+    <footer className="public-site-footer mt-16 border-t border-line bg-cloud pb-[max(1.5rem,var(--safe-bottom))]">
       <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
         <div className="max-w-sm space-y-4">
           <Wordmark name={settings.companyName} logoUrl={productImageUrl(settings.logoPath)} />

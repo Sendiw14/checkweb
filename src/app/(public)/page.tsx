@@ -19,20 +19,20 @@ export default async function LandingPage() {
   return (
     <>
       {/* ------------------------------ HERO ------------------------------ */}
-      <section className="relative isolate overflow-hidden border-b border-line">
-        <div aria-hidden className="bg-grid bg-grid-fade absolute inset-0 -z-10 opacity-80" />
-        <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] items-center gap-12 px-4 pb-16 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:pb-24 lg:pt-20">
+      <section className="landing-hero relative isolate overflow-hidden border-b border-line">
+        <div aria-hidden className="landing-hero-grid bg-grid bg-grid-fade absolute inset-0 -z-10 opacity-35" />
+        <div className="landing-hero-layout mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] items-center gap-10 px-4 pb-14 pt-10 sm:gap-12 sm:px-6 sm:pb-20 sm:pt-16 lg:grid-cols-[1.02fr_0.98fr] lg:gap-10 lg:pb-24 lg:pt-20">
           <div>
-            <p className="text-eyebrow">Part authenticity check</p>
-            <h1 className="text-display mt-5 max-w-[14ch]">Know the part in your hands is registered.</h1>
-            <p className="text-lead mt-6">
+            <p className="hero-kicker text-eyebrow"><span aria-hidden className="hero-kicker-dot" />Part authenticity, made clear</p>
+            <h1 className="hero-headline text-display mt-5 max-w-[13ch]">Know the part in your hands is registered.</h1>
+            <p className="hero-intro text-lead mt-6">
               Every {s.companyName} part carries its own code. Scan it with your phone's camera and we'll check it against our records, in plain language. No app, no account.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="hero-actions mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg"><Link href="/verify"><ScanLine aria-hidden />Scan or enter a code</Link></Button>
               <Button asChild size="lg" variant="secondary"><Link href="#how-it-works">How it works<ArrowRight aria-hidden /></Link></Button>
             </div>
-            <div className="mt-10 max-w-md rounded-xl border border-line bg-white/80 p-5 backdrop-blur">
+            <div className="hero-code-panel mt-9 max-w-md rounded-xl border border-line bg-white p-5 sm:mt-10 sm:p-6">
               <HeroCodeEntry />
             </div>
           </div>
@@ -41,7 +41,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ------------------------- HOW IT WORKS --------------------------- */}
-      <section id="how-it-works" className="scroll-mt-20 py-20 sm:py-28">
+      <section id="how-it-works" className="editorial-section scroll-mt-20 py-20 sm:py-28">
         <div className="mx-auto w-full max-w-[var(--container-page)] px-4 sm:px-6">
           <Reveal className="max-w-2xl">
             <p className="text-eyebrow">How it works</p>
@@ -67,7 +67,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ----------------------- WHAT THE CHECK TELLS YOU ------------------ */}
-      <section className="border-y border-line bg-cloud py-20 sm:py-28">
+      <section className="trust-section border-y border-line bg-cloud py-20 sm:py-28">
         <div className="mx-auto grid grid-cols-[minmax(0,1fr)] w-full max-w-[var(--container-page)] gap-14 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <Reveal>
             <p className="text-eyebrow">What we check</p>
@@ -115,7 +115,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ---------------------- IF SOMETHING LOOKS WRONG ------------------- */}
-      <section className="py-20 sm:py-28">
+      <section className="support-section py-20 sm:py-28">
         <div className="mx-auto w-full max-w-[var(--container-page)] px-4 sm:px-6">
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl border border-[#c7d9f8] bg-brand-soft px-6 py-12 sm:px-12 sm:py-16">
