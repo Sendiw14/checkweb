@@ -22,7 +22,7 @@ export function SheetContent({ side = "right", className, children, title, descr
       <D.Overlay className="fixed inset-0 z-[var(--z-overlay)] bg-ink/45 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0" />
       <D.Content
         className={cn(
-          "fixed z-[var(--z-modal)] flex flex-col overflow-y-auto border-line bg-surface shadow-pop duration-[var(--dur-base)] ease-[var(--ease-out)] data-[state=open]:animate-in data-[state=closed]:animate-out",
+          "app-sheet-panel fixed z-[var(--z-modal)] flex flex-col overflow-y-auto border-line bg-surface shadow-pop duration-[var(--dur-base)] ease-[var(--ease-out)] data-[state=open]:animate-in data-[state=closed]:animate-out",
           sides[side], className,
         )}
         {...props}
