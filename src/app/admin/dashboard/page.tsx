@@ -45,7 +45,7 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      <section aria-label="Additional indicators" className="dashboard-secondary-metrics mt-3 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
+      <section aria-label="Additional indicators" className="dashboard-secondary-metrics mt-3 grid max-w-4xl grid-cols-2 gap-3 sm:gap-4">
         <Stat label="Pending / on hold" value={d.units.pending + d.units.quarantined} icon={<History />} hint={`${formatNumber(d.units.pending)} in process · ${formatNumber(d.units.quarantined)} quarantined`} tone={d.units.quarantined ? "warning" : "neutral"} />
         <Stat label="Invalid codes today" value={d.today.invalid} icon={<CircleAlert />} tone={d.today.invalid > 10 ? "danger" : "neutral"} hint="Codes not found in company records" />
       </section>
