@@ -479,8 +479,8 @@ html[data-brand="teal"] { --brand: #0f766e; --brand-deep: #115e59; --brand-soft:
   min-height: 7rem;
   border-color: color-mix(in srgb, var(--line) 82%, white);
 }
-.dashboard-panel [data-slot="card-title"] { letter-spacing: -.025em; }
-.dashboard-panel [data-slot="card-description"] { max-width: 44rem; }
+.dashboard-panel h2, .dashboard-panel h3 { letter-spacing: -.025em; }
+.dashboard-panel p { max-width: 44rem; }
 .verification-result-layout { align-items: start; }
 .verification-product > div:first-child {
   background:
