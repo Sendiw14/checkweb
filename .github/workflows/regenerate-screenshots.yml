@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - claude/automotive-authenticity-platform-gxvwmt
+      - automation/regenerate-redesign-screenshots
     paths-ignore:
       - "docs/screenshots/**"
   pull_request:
