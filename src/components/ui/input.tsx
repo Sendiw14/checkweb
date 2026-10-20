@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { useFieldProps } from "./field";
 
 const control = [
-  "w-full rounded-md border border-input bg-surface px-3 text-[0.9375rem] text-ink",
+  "app-control w-full rounded-md border border-input bg-surface px-3 text-[0.9375rem] text-ink",
   "placeholder:text-quiet",
   "transition-[border-color,box-shadow] duration-[var(--dur-fast)]",
   "hover:border-ink/60",
