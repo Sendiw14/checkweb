@@ -51,7 +51,7 @@ export function DataGrid<T>({ data, columns, caption, sortParam = "sort", dirPar
   return (
     <>
       {/* Phone layout: one card per row. Same cells as the table, so behaviour never diverges. */}
-      <div className="grid gap-3 sm:hidden">
+      <div className="data-grid-mobile grid gap-3 sm:hidden">
         {sortable.length ? (
           <label className="flex items-center gap-2 text-small text-quiet">
             <span className="shrink-0">Sort by</span>
@@ -70,13 +70,13 @@ export function DataGrid<T>({ data, columns, caption, sortParam = "sort", dirPar
             const cells = row.getVisibleCells();
             const render = (id: string | undefined) => { const c = cells.find((x) => x.column.id === id); return c ? flexRender(c.column.columnDef.cell, c.getContext()) : null; };
             return (
-              <li key={row.id} className="rounded-lg border border-line bg-white p-4">
+              <li key={row.id} className="data-grid-mobile-card rounded-xl border border-line bg-white p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1 text-body">{render(titleId)}</div>
                   {actionIds.length ? <div className="flex shrink-0 items-center gap-1">{actionIds.map((id) => <React.Fragment key={id}>{render(id)}</React.Fragment>)}</div> : null}
                 </div>
                 {detailCols.length ? (
-                  <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line pt-3">
+                  <dl className="data-grid-mobile-details mt-3 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line pt-3">
                     {detailCols.map((c) => (
                       <div key={c.id} className="min-w-0">
                         <dt className="text-caption text-quiet">{c.label ?? c.id}</dt>
@@ -91,7 +91,7 @@ export function DataGrid<T>({ data, columns, caption, sortParam = "sort", dirPar
         </ul>
       </div>
 
-    <TableWrapper label={caption} className="border border-line bg-white max-sm:hidden">
+    <TableWrapper label={caption} className="data-grid-table border border-line bg-white max-sm:hidden">
       <Table>
         <caption className="sr-only">{caption}</caption>
         <TableHeader>
@@ -103,7 +103,7 @@ export function DataGrid<T>({ data, columns, caption, sortParam = "sort", dirPar
                 return (
                   <TableHead key={h.id} aria-sort={active ? (dir === "asc" ? "ascending" : "descending") : meta.sortKey ? "none" : undefined} className={cn(meta.hideBelow && hide[meta.hideBelow], meta.align === "right" && "text-right", meta.headClassName)}>
                     {meta.sortKey ? (
-                      <button type="button" onClick={() => setSort(meta.sortKey!)} className={cn("group -mx-1.5 inline-flex items-center gap-1 rounded px-1.5 py-1 uppercase tracking-wider transition-colors hover:text-ink", active && "text-ink")}>
+                      <button type="button" onClick={() => setSort(meta.sortKey!)} className={cn("data-grid-sort-button group -mx-1.5 inline-flex items-center gap-1 rounded px-1.5 py-1 uppercase tracking-wider transition-colors hover:text-ink", active && "text-ink")}>
                         {flexRender(h.column.columnDef.header, h.getContext())}
                         {active ? (dir === "asc" ? <ArrowUp aria-hidden className="size-3.5" /> : <ArrowDown aria-hidden className="size-3.5" />) : <ChevronsUpDown aria-hidden className="size-3.5 opacity-0 transition-opacity group-hover:opacity-60 group-focus-visible:opacity-60" />}
                         <span className="sr-only">{active ? `, sorted ${dir === "asc" ? "ascending" : "descending"}. Activate to reverse.` : ", activate to sort"}</span>

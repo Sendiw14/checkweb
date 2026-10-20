@@ -46,16 +46,16 @@ export function ListToolbar({ placeholder = "Search…", filters = [], searchPar
   const active = filters.filter((f) => sp.get(f.param)).length + (urlQ ? 1 : 0);
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" role="search" aria-busy={pending}>
-      {showSearchless ? null : <div className="relative min-w-0 sm:w-72">
+    <div className="app-list-toolbar flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" role="search" aria-busy={pending}>
+      {showSearchless ? null : <div className="app-list-search relative min-w-0 sm:w-72">
         <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-quiet" />
         <input
           type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={placeholder} aria-label={placeholder}
-          className="h-10 w-full rounded-md border border-input bg-white pl-9 pr-3 text-[0.9375rem] text-ink placeholder:text-quiet hover:border-ink/60 focus-visible:border-brand focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-brand/25 pointer-coarse:h-11"
+          className="app-list-search-control h-10 w-full rounded-md border border-input bg-white pl-9 pr-3 text-[0.9375rem] text-ink placeholder:text-quiet hover:border-ink/60 focus-visible:border-brand focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-brand/25 pointer-coarse:h-11"
         />
       </div>}
       {filters.map((f) => (
-        <div key={f.param} className="sm:w-48">
+        <div key={f.param} className="app-list-filter sm:w-48">
           <Select value={sp.get(f.param) ?? ALL} onValueChange={(v) => { const next = new URLSearchParams(sp.toString()); if (v === ALL) next.delete(f.param); else next.set(f.param, v); push(next); }}>
             <SelectTrigger aria-label={f.label}><SelectValue /></SelectTrigger>
             <SelectContent>

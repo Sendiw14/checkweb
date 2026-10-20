@@ -84,3 +84,14 @@ The current refinement uses the existing white-first system rather than replacin
 * The admin dashboard separates primary operating indicators from secondary exceptions and groups analytics and production work into clearer panels.
 * Motion is limited to short, one-time entrance treatments and the existing component-level interactions. Reduced-motion behavior remains mandatory.
 * Reuse the existing tokens, typography scale, semantic state colors, and accessible controls; design polish must not reduce contrast or make status color the only signal.
+
+
+## Cross-product refinement pass
+
+The second pass applies the visual system to frequently used shared controls rather than creating one-off page styles:
+
+* List toolbars, search fields and filters share an aligned control surface and consistent focus halo.
+* Data grids use a softer table header, considered row spacing, restrained hover/focus treatment and mobile record cards with stronger metadata labels.
+* Empty and no-result states have a more intentional icon treatment and compact hierarchy.
+* Form controls, select menus, dialogs and drawers share the same elevation and focus language.
+* These styles add presentation classes around existing behavior; filtering, URL state, authorization, data access and verification semantics remain unchanged.

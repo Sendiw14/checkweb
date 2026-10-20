@@ -8,13 +8,13 @@ export function EmptyState({
   icon?: React.ReactNode; title: string; description?: React.ReactNode; action?: React.ReactNode; className?: string; tone?: "neutral" | "danger";
 }) {
   return (
-    <div className={cn("flex flex-col items-center justify-center gap-3 px-6 py-14 text-center", className)}>
+    <div className={cn("app-empty-state flex flex-col items-center justify-center gap-3 px-6 py-14 text-center", className)}>
       {icon ? (
-        <div aria-hidden className={cn("grid size-12 place-items-center rounded-full border [&_svg]:size-5", tone === "danger" ? "border-danger-line bg-danger-soft text-danger" : "border-line bg-cloud text-quiet")}>
+        <div aria-hidden className={cn("app-empty-state-icon grid size-12 place-items-center rounded-xl border [&_svg]:size-5", tone === "danger" ? "border-danger-line bg-danger-soft text-danger" : "border-line bg-cloud text-quiet")}>
           {icon}
         </div>
       ) : null}
-      <div className="max-w-sm space-y-1">
+      <div className="app-empty-state-copy max-w-sm space-y-1">
         <p className="text-subheading">{title}</p>
         {description ? <p className="text-small text-quiet">{description}</p> : null}
       </div>

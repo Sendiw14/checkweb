@@ -12,7 +12,7 @@ export const SelectValue = S.Value;
 export function SelectTrigger({ className, children, ...raw }: React.ComponentProps<typeof S.Trigger>) {
   const props = useFieldProps(raw as React.ComponentProps<"button">) as React.ComponentProps<typeof S.Trigger>;
   return (
-    <S.Trigger className={cn(controlClass, "inline-flex h-10 items-center justify-between gap-2 text-left data-[placeholder]:text-quiet pointer-coarse:h-11 [&>span]:truncate", className)} {...props}>
+    <S.Trigger className={cn(controlClass, "app-select-trigger inline-flex h-10 items-center justify-between gap-2 text-left data-[placeholder]:text-quiet pointer-coarse:h-11 [&>span]:truncate", className)} {...props}>
       {children}
       <S.Icon asChild><ChevronDown aria-hidden className="size-4 shrink-0 text-quiet" /></S.Icon>
     </S.Trigger>
@@ -27,7 +27,7 @@ export function SelectContent({ className, children, position = "popper", ...pro
         sideOffset={6}
         collisionPadding={12}
         className={cn(
-          "relative z-[var(--z-modal)] max-h-72 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border border-line bg-surface shadow-pop",
+          "app-select-content relative z-[var(--z-modal)] max-h-72 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-xl border border-line bg-surface shadow-pop",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 duration-[var(--dur-fast)]",
           className,
         )}
@@ -43,7 +43,7 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
   return (
     <S.Item
       className={cn(
-        "relative flex min-h-9 cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-3 text-small text-body outline-none",
+        "app-select-item relative flex min-h-9 cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-3 text-small text-body outline-none",
         "data-[highlighted]:bg-subtle data-[highlighted]:text-ink data-[disabled]:pointer-events-none data-[disabled]:opacity-45 pointer-coarse:min-h-11",
         className,
       )}
