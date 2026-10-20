@@ -72,3 +72,15 @@ regions, labels programmatically tied to inputs, dropdown menus follow the non-m
 regions are keyboard-focusable, dialogs and sheets trap focus and **return it to whatever opened them** (`useRestoreFocus`; also when the opener was a menu item), and the account menu's accessible name contains
 its visible text (WCAG 2.5.3). Automated checks do not replace a manual screen-reader and keyboard review; do one
 before launch.
+
+
+## Visual refinement — Precision in Motion
+
+The current refinement uses the existing white-first system rather than replacing it with another theme.
+
+* The homepage uses an editorial two-column hero with a restrained atmospheric wash, a precision-machined rotor illustration, and a serialized label. The callout describes serialization, not a fabricated successful verification.
+* The product fallback is category-neutral. It represents a serialized unit/package instead of pretending every missing product image is a brake rotor.
+* The customer verdict is more compact on phones, with the verdict first and product identity immediately after it. The existing status copy and verification logic remain the source of truth.
+* The admin dashboard separates primary operating indicators from secondary exceptions and groups analytics and production work into clearer panels.
+* Motion is limited to short, one-time entrance treatments and the existing component-level interactions. Reduced-motion behavior remains mandatory.
+* Reuse the existing tokens, typography scale, semantic state colors, and accessible controls; design polish must not reduce contrast or make status color the only signal.
