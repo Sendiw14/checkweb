@@ -1,0 +1,120 @@
+name: Regenerate design screenshots
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/automotive-authenticity-platform-gxvwmt
+      - automation/regenerate-redesign-screenshots
+    paths-ignore:
+      - "docs/screenshots/**"
+  pull_request:
+    branches:
+      - claude/automotive-authenticity-platform-gxvwmt
+    paths-ignore:
+      - "docs/screenshots/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regenerate-screenshots-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  screenshots:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out the PR branch
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Set up local Supabase
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start isolated local services
+        run: |
+          supabase init --force
+          supabase start -x studio,inbucket,imgproxy,vector,logflare,analytics,edge-runtime,storage-api
+          supabase status -o env > /tmp/supabase.env
+          API_URL=$(grep '^API_URL=' /tmp/supabase.env | cut -d= -f2- | tr -d '"')
+          DB_URL=$(grep '^DB_URL=' /tmp/supabase.env | cut -d= -f2- | tr -d '"')
+          ANON_KEY=$(grep '^ANON_KEY=' /tmp/supabase.env | cut -d= -f2- | tr -d '"')
+          SERVICE_ROLE_KEY=$(grep '^SERVICE_ROLE_KEY=' /tmp/supabase.env | cut -d= -f2- | tr -d '"')
+          test -n "$API_URL" && test -n "$DB_URL" && test -n "$ANON_KEY" && test -n "$SERVICE_ROLE_KEY"
+          {
+            echo "SUPABASE_URL=$API_URL"
+            echo "DATABASE_ADMIN_URL=$DB_URL"
+            echo "SUPABASE_ANON_KEY=$ANON_KEY"
+            echo "SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
+          } >> "$GITHUB_ENV"
+
+      - name: Configure disposable development environment
+        run: |
+          cat > .env.local <<EOF
+          DATABASE_URL=postgresql://app_server:app_server_dev_pw@127.0.0.1:54322/postgres
+          VERIFIER_DATABASE_URL=postgresql://app_verifier:app_verifier_dev_pw@127.0.0.1:54322/postgres
+          DATABASE_ADMIN_URL=$DATABASE_ADMIN_URL
+          SUPABASE_URL=$SUPABASE_URL
+          SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
+          SUPABASE_SERVICE_ROLE_KEY=$SUPABASE_SERVICE_ROLE_KEY
+          PUBLIC_SITE_URL=http://localhost:3000
+          NETWORK_HASH_PEPPER=local-screenshot-only-network-pepper-2026
+          ARTIFACT_STORAGE=local
+          LOCAL_STORAGE_DIR=.local-storage
+          CRON_SECRET=local-screenshot-only-cron-secret-2026
+          REQUIRE_MFA_FOR_PRIVILEGED=false
+          EOF
+          pnpm db:migrate
+          psql "$DATABASE_ADMIN_URL" -v ON_ERROR_STOP=1 -c "ALTER ROLE app_server LOGIN PASSWORD 'app_server_dev_pw'; ALTER ROLE app_verifier LOGIN PASSWORD 'app_verifier_dev_pw';"
+
+      - name: Seed synthetic screenshot data
+        run: pnpm db:seed:dev --units=1200
+
+      - name: Start the redesigned app
+        run: |
+          nohup pnpm dev > /tmp/next-dev.log 2>&1 &
+          for attempt in $(seq 1 90); do
+            if curl --fail --silent http://127.0.0.1:3000/api/health > /dev/null; then
+              echo "Next.js app is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/next-dev.log
+          exit 1
+
+      - name: Create the E2E owner session and render screenshots
+        run: |
+          pnpm exec tsx -e 'import("./tests/e2e/global-setup.ts").then((m) => m.default({} as never))'
+          pnpm docs:screenshots
+
+      - name: Upload regenerated screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: redesigned-screenshots
+          path: docs/screenshots/*.png
+          if-no-files-found: error
+          retention-days: 7
