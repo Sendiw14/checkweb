@@ -436,3 +436,65 @@ html[data-brand="teal"] { --brand: #0f766e; --brand-deep: #115e59; --brand-soft:
 @media (prefers-reduced-motion: reduce) {
   .hero-rotor, .hero-art-label, .hero-art-callout { animation: none !important; transform: none; }
 }
+
+
+/* Shared shell refinements: one visual rhythm across public and staff routes. */
+.public-site-header {
+  box-shadow: 0 3px 16px -15px rgb(23 43 77 / .28);
+}
+.public-site-header-inner > a:first-child,
+.app-admin-brand a {
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+.public-site-header-inner > a:first-child:hover,
+.app-admin-brand a:hover { opacity: .86; }
+.public-site-footer {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--cloud) 88%, white), var(--cloud));
+}
+.app-admin-sidebar {
+  box-shadow: 5px 0 24px -26px rgb(23 43 77 / .45);
+}
+.app-topbar {
+  box-shadow: 0 8px 20px -22px rgb(23 43 77 / .42);
+}
+.app-page-header {
+  position: relative;
+}
+.app-page-title {
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.app-page-description {
+  color: var(--quiet);
+  line-height: 1.65;
+}
+.app-breadcrumbs a {
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.app-breadcrumbs a:hover { color: var(--brand); }
+.dashboard-insights > *,
+.dashboard-activity-grid > * { min-width: 0; }
+.dashboard-secondary-metrics .stat-card {
+  min-height: 7rem;
+  border-color: color-mix(in srgb, var(--line) 82%, white);
+}
+.dashboard-panel [data-slot="card-title"] { letter-spacing: -.025em; }
+.dashboard-panel [data-slot="card-description"] { max-width: 44rem; }
+.verification-result-layout { align-items: start; }
+.verification-product > div:first-child {
+  background:
+    radial-gradient(ellipse at 50% 42%, color-mix(in srgb, var(--brand-soft) 55%, white), transparent 76%),
+    var(--cloud);
+}
+@media (min-width: 1024px) {
+  .hero-headline { max-width: 11ch; }
+  .app-page-header { padding-bottom: .25rem; }
+}
+@media (max-width: 639px) {
+  .landing-hero { background: linear-gradient(180deg, #fff 0%, #fbfcff 100%); }
+  .landing-hero-grid { opacity: .24; }
+  .hero-code-panel { box-shadow: 0 12px 32px -30px rgb(23 43 77 / .45); }
+  .verification-verdict-texture { opacity: .14; }
+  .dashboard-secondary-metrics { max-width: none; }
+}
