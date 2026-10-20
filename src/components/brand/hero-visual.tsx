@@ -1,5 +1,3 @@
-"use client";
-
 import { Fingerprint, ScanLine } from "lucide-react";
 import { PartLabel } from "@/components/brand/part-label";
 
