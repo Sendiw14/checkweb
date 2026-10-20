@@ -9,7 +9,7 @@ export type SeriesPoint = { day: string; recognized: number; suspicious: number;
 const SERIES = [
   { key: "recognized", label: "Recognized", color: "#2457C5" },
   { key: "suspicious", label: "Unusual pattern", color: "#B7791F" },
-  { key: "flagged", label: "Revoked / recalled / on hold", color: "#7C5CBF" },
+  { key: "flagged", label: "Revoked / recalled / on hold", color: "#475467" },
   { key: "invalid", label: "Code not found", color: "#B42318" },
 ] as const;
 
