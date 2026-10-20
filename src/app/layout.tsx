@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const nonce = (await headers()).get("x-nonce") ?? undefined;
   const settings = await getSiteSettings();
   return (
-    <html lang="en" data-brand={settings.brandTheme} className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-brand={settings.brandTheme} data-scroll-behavior="smooth" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
       <body className="min-h-dvh antialiased" data-nonce={nonce ? "set" : undefined}>
         <a href="#main" className="sr-only-focusable fixed left-3 top-3 z-[var(--z-toast)] rounded-md bg-ink px-3 py-2 text-small font-medium text-white">
           Skip to content

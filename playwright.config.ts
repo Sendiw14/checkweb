@@ -23,8 +23,11 @@ export default defineConfig({
     contextOptions: { reducedMotion: "reduce" },
   },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } },
-    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /(rbac|workflow|mfa|team|investigation)\.spec\.ts/ },
+    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } }, testIgnore: /motion\.spec\.ts/ },
+    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /(rbac|workflow|mfa|team|investigation|motion)\.spec\.ts/ },
+    // Every other project runs with reduced motion, so none of the choreography is exercised there. This one runs
+    // only motion.spec.ts with animations ON, to catch regressions that only exist while things move.
+    { name: "motion", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 }, contextOptions: { reducedMotion: "no-preference" } }, testMatch: /motion\.spec\.ts/ },
   ],
   webServer: process.env.E2E_BASE_URL ? undefined : { command: "npm run dev", url: `${E2E.baseURL}/api/health`, reuseExistingServer: true, timeout: 180_000 },
 });

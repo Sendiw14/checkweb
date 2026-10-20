@@ -148,6 +148,7 @@ html[data-brand="teal"] { --brand: #0f766e; --brand-deep: #115e59; --brand-soft:
       animation-iteration-count: 1 !important;
       animation-delay: 0s !important;
       transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
     }
   }
 }
@@ -245,14 +246,15 @@ html[data-brand="teal"] { --brand: #0f766e; --brand-deep: #115e59; --brand-soft:
 .crop-marks > .crop-b::before { bottom: -1px; left: -1px; border-width: 0 0 1.5px 1.5px; }
 .crop-marks > .crop-b::after { bottom: -1px; right: -1px; border-width: 0 1.5px 1.5px 0; }
 
-/* Scan line used in the hero visual; paused for reduced motion via the global rule. */
+/* One scan sweep, then it rests (WCAG 2.2.2: nothing auto-plays for more than 5s). The base state is
+   hidden, so reduced-motion, no-JS and unsupported browsers never show a stray bar. */
 @keyframes scan-sweep {
-  0%, 12% { transform: translateY(0); opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  88%, 100% { transform: translateY(var(--scan-distance, 120px)); opacity: 0; }
+  0% { transform: translateY(0); opacity: 0; }
+  14% { opacity: 1; }
+  86% { opacity: 1; }
+  100% { transform: translateY(var(--scan-distance, 120px)); opacity: 0; }
 }
-.scan-line { animation: scan-sweep 3.6s var(--ease-in-out) infinite; }
+.scan-line { opacity: 0; animation: scan-sweep 1.8s var(--ease-in-out) 600ms 1 backwards; }
 
 /* Status seal: the ring draws in once, the icon eases in. Pure CSS so it is SSR-safe,
    needs no JavaScript and collapses to the final state under reduced motion. */
@@ -264,7 +266,9 @@ html[data-brand="teal"] { --brand: #0f766e; --brand-deep: #115e59; --brand-soft:
 /* Page enter + scroll reveal: CSS only, so content is visible without JavaScript and
    LCP is never delayed waiting for hydration. Reveal is progressive enhancement. */
 @keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.page-enter { animation: page-in var(--dur-base) var(--ease-out) both; }
+/* fill-mode backwards, never both/forwards: a filled transform makes the element the containing block of every
+   position:fixed descendant (it detached the admin sidebar, which then scrolled away). */
+.page-enter { animation: page-in var(--dur-base) var(--ease-out) backwards; }
 @keyframes reveal-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
