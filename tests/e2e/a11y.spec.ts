@@ -103,6 +103,42 @@ test.describe("the staff workspace meets WCAG 2.2 AA (axe)", () => {
     });
   }
 
+  test("overlays are accessible and give focus back to whatever opened them", async ({ page }) => {
+    test.skip(!ids.unit, "needs a part unit");
+    await page.goto(`/admin/part-units/${ids.unit}`);
+
+    // 1. A dialog opened from an ordinary button.
+    const open = page.getByRole("button", { name: "Open investigation" });
+    await open.click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expectAccessible(page, "open investigation dialog");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(open, "focus returns to the button that opened the dialog").toBeFocused();
+
+    // 2. A dialog opened from a menu item (the item is gone by the time the dialog closes).
+    const more = page.getByRole("button", { name: /more unit actions/i });
+    await more.click();
+    await page.getByRole("menuitem", { name: /quarantine unit/i }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expectAccessible(page, "quarantine dialog");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(more, "focus returns to the menu button").toBeFocused();
+  });
+
+  test("a side sheet is accessible and returns focus to its row button", async ({ page }) => {
+    await page.goto("/admin/scans");
+    const details = page.getByRole("button", { name: /^Details of event/ }).first();
+    test.skip((await details.count()) === 0, "needs scan events");
+    await details.click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expectAccessible(page, "event details sheet");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(details).toBeFocused();
+  });
+
   test("the user menu, global search and a confirm dialog when open", async ({ page }) => {
     await page.goto("/admin/dashboard");
     await page.getByRole("button", { name: /account menu/i }).click();

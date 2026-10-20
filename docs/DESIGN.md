@@ -69,6 +69,6 @@ Targeting **WCAG 2.2 AA**; axe (wcag2a/aa, 21a/aa, 22aa) runs in CI-ready e2e te
 verification outcome and every staff page with real data, on desktop and a phone viewport. Notable choices:
 skip link, one `h1` per page, focus moves to the result heading after a check, results announced via live
 regions, labels programmatically tied to inputs, dropdown menus follow the non-modal menu-button pattern, scroll
-regions are keyboard-focusable, dialogs trap and restore focus, and the account menu's accessible name contains
+regions are keyboard-focusable, dialogs and sheets trap focus and **return it to whatever opened them** (`useRestoreFocus`; also when the opener was a menu item), and the account menu's accessible name contains
 its visible text (WCAG 2.5.3). Automated checks do not replace a manual screen-reader and keyboard review; do one
 before launch.

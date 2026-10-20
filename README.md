@@ -9,6 +9,14 @@ without pretending to know more than it does.
 > says so on every result, never accuses anyone, and treats unusual scan patterns as hints for a person to look
 > at, not verdicts. See [docs/SECURITY.md](docs/SECURITY.md) for the threat model and its limits.
 
+## What it looks like
+
+Real output of the running app (see [docs/screenshots](docs/screenshots/README.md); regenerate with `pnpm docs:screenshots`).
+
+| Customer scans a label | Same page, honest about a problem | Staff: a part's page |
+|---|---|---|
+| <img src="docs/screenshots/verify-recognized-390.png" width="220" alt="Code recognized result on a phone"> | <img src="docs/screenshots/verify-revoked-390.png" width="220" alt="Code no longer valid result on a phone"> | <img src="docs/screenshots/admin-unit-1440.png" width="420" alt="Part unit page in the staff workspace"> |
+
 ## How it works
 
 ```
@@ -25,7 +33,9 @@ Staff see scans, investigate patterns, revoke / replace labels, quarantine, reti
 ```
 
 The token lives in the URL **fragment** (`#…`), which browsers never send to servers, so it does not appear in
-access logs, CDN logs or `Referer` headers. Plaintext tokens exist only inside the generated label PDFs.
+access logs, CDN logs or `Referer` headers. On the server a plaintext token exists only in memory while a label
+chunk is being generated and inside the PDF that chunk produces (and then on the printed label); the database
+keeps only its hash.
 
 ## Stack
 

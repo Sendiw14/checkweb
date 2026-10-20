@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Field } from "./field";
+import { useRestoreFocus } from "./restore-focus";
 
 const overlay = "fixed inset-0 z-[var(--z-overlay)] bg-ink/45 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 duration-[var(--dur-base)]";
 const panel = [
@@ -19,11 +20,18 @@ export const Dialog = D.Root;
 export const DialogTrigger = D.Trigger;
 export const DialogClose = D.Close;
 
-export function DialogContent({ className, children, title, description, hideClose, ...props }: React.ComponentProps<typeof D.Content> & { title: React.ReactNode; description?: React.ReactNode; hideClose?: boolean }) {
+export function DialogContent({ className, children, title, description, hideClose, onOpenAutoFocus, onCloseAutoFocus, ...props }: React.ComponentProps<typeof D.Content> & { title: React.ReactNode; description?: React.ReactNode; hideClose?: boolean }) {
+  const rf = useRestoreFocus();
   return (
     <D.Portal>
       <D.Overlay className={overlay} />
-      <D.Content className={cn(panel, className)} {...props} {...(description ? {} : { "aria-describedby": undefined })}>
+      <D.Content
+        className={cn(panel, className)}
+        {...props}
+        onOpenAutoFocus={(e) => { rf.onOpenAutoFocus(); onOpenAutoFocus?.(e); }}
+        onCloseAutoFocus={(e) => { onCloseAutoFocus?.(e); if (!e.defaultPrevented) rf.onCloseAutoFocus(e); }}
+        {...(description ? {} : { "aria-describedby": undefined })}
+      >
         <div className="space-y-1.5 pr-8">
           <D.Title className="text-heading">{title}</D.Title>
           {description ? <D.Description className="text-small text-quiet">{description}</D.Description> : null}
@@ -56,12 +64,13 @@ export function ConfirmDialog({
   const [busy, setBusy] = React.useState(false);
   const [typed, setTyped] = React.useState("");
   const blocked = !!requireText && typed.trim() !== requireText;
+  const rf = useRestoreFocus();
 
   return (
     <AD.Root open={open} onOpenChange={(v) => { if (busy) return; if (!v) setTyped(""); onOpenChange(v); }}>
       <AD.Portal>
         <AD.Overlay className={overlay} />
-        <AD.Content className={panel}>
+        <AD.Content className={panel} onOpenAutoFocus={rf.onOpenAutoFocus} onCloseAutoFocus={rf.onCloseAutoFocus}>
           <div className="space-y-1.5">
             <AD.Title className="text-heading">{title}</AD.Title>
             <AD.Description asChild><div className="text-small text-body">{description}</div></AD.Description>

@@ -42,7 +42,7 @@ destructible labels, holograms, scratch-off codes) on top. This software support
 * Supabase Auth, PKCE, httpOnly + SameSite=Lax (+ Secure in production) cookies; no tokens in browser storage; no browser-side Supabase client.
 * Public sign-up must stay disabled. The first owner is created with `pnpm bootstrap:owner`; everyone else is invited by an owner/admin and sets a password through a single-use link confirmed by a **POST** (so link scanners that pre-fetch URLs cannot burn it).
 * TOTP MFA is available to everyone. An enrolled factor is always enforced; `REQUIRE_MFA_FOR_PRIVILEGED=true` additionally requires owners and admins to enrol. A password-only session of an enrolled user is refused everywhere (pages, actions, APIs). This was a real gap that testing found and fixed; there is a regression test.
-* Login, password-reset, MFA, password-change and search endpoints are rate limited per account and per client network. Login failures are indistinguishable (unknown email, wrong password, no membership and suspended all give the same message).
+* Login, password reset, MFA, password change, search, exports and downloads are rate limited (per account and/or per client network, as appropriate). Login failures are indistinguishable (unknown email, wrong password, no membership and suspended all give the same message).
 * Everyday sign-out ends only the current session; "sign out other devices" and password changes revoke the others.
 * Suspending or demoting someone takes effect on their next request: membership and role are re-read on every request, regardless of how long their JWT would remain valid.
 
@@ -84,7 +84,7 @@ destructible labels, holograms, scratch-off codes) on top. This software support
 | Database or Supabase project compromise | Hashes make stolen tokens unusable for *new* codes but valid-code checks still depend on the database being trustworthy |
 | Denial of service | Application rate limits are a floor. Put a WAF / platform firewall in front, and size the database |
 | IP address handling | Rate limiting trusts `x-real-ip` / `x-forwarded-for` as set by the platform. Behind anything other than Vercel, make sure clients cannot spoof them |
-| Dependencies | `pnpm audit` is not enforced in CI here; add it and Dependabot in your pipeline |
+| Dependencies | `pnpm audit --prod` (runtime) reported **no** known vulnerabilities on 2026-10-19. The full audit reports **1 high advisory in a dev-only transitive dependency**: `braces` ≤ 3.0.3 (stack exhaustion on deeply nested glob patterns, GHSA-vfj7-8cjw-p6xm) via `eslint-config-next → fast-glob → micromatch`; the advisory lists no patched version. It is in lint tooling only, not in the runtime or the build output, and is accepted for now. Run `pnpm audit` in CI and enable Dependabot |
 | Not independently pen-tested | No third-party penetration test has been performed |
 
 ## Reporting a vulnerability

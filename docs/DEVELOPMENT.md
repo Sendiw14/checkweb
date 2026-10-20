@@ -50,7 +50,7 @@ Conventions the tests protect (and why):
 * **`proxy.ts` must live in `src/`.** Next.js ignores a root-level proxy file when `src/` exists; a unit test guards it.
 * **Inside `<Field>`, never set `id` on the control.** Pass `id` to `Field` (otherwise the label points at nothing).
 * **Grids:** a bare `.grid` is a single shrinkable column by default; prefer explicit `grid-cols-*` for multiple columns.
-* **Dialogs and menus:** menus are non-modal (`modal={false}`); confirmations use `ConfirmDialog` (role `alertdialog`).
+* **Dialogs, sheets and menus:** use the shared `Dialog`, `ConfirmDialog` and `Sheet` (they return focus to the opener); menus are non-modal (`modal={false}`); confirmations are role `alertdialog`. Don't build ad-hoc overlays.
 * **Customer wording lives in `src/lib/verification-copy.ts`.** Don't write verdict text elsewhere; keep it free of accusations.
 * **Migrations are append-only.** Never edit an applied migration; add a new numbered file.
 

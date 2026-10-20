@@ -3,6 +3,7 @@ import * as React from "react";
 import { Dialog as D } from "radix-ui";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRestoreFocus } from "./restore-focus";
 
 export const Sheet = D.Root;
 export const SheetTrigger = D.Trigger;
@@ -14,7 +15,8 @@ const sides = {
   bottom: "inset-x-0 bottom-0 max-h-[85dvh] rounded-t-xl data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom border-t pb-[max(1rem,var(--safe-bottom))]",
 } as const;
 
-export function SheetContent({ side = "right", className, children, title, description, ...props }: React.ComponentProps<typeof D.Content> & { side?: keyof typeof sides; title: string; description?: string }) {
+export function SheetContent({ side = "right", className, children, title, description, onOpenAutoFocus, onCloseAutoFocus, ...props }: React.ComponentProps<typeof D.Content> & { side?: keyof typeof sides; title: string; description?: string }) {
+  const rf = useRestoreFocus();
   return (
     <D.Portal>
       <D.Overlay className="fixed inset-0 z-[var(--z-overlay)] bg-ink/45 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0" />
@@ -24,6 +26,8 @@ export function SheetContent({ side = "right", className, children, title, descr
           sides[side], className,
         )}
         {...props}
+        onOpenAutoFocus={(e) => { rf.onOpenAutoFocus(); onOpenAutoFocus?.(e); }}
+        onCloseAutoFocus={(e) => { onCloseAutoFocus?.(e); if (!e.defaultPrevented) rf.onCloseAutoFocus(e); }}
         {...(description ? {} : { "aria-describedby": undefined })}
       >
         <D.Title className="sr-only">{title}</D.Title>
